@@ -34,6 +34,9 @@ dependencies:
   http: ^1.1.0
   animated_bottom_navigation_bar: ^1.2.1
   flutter_image_slideshow: ^0.1.6
+  animated_text_kit: ^4.2.2
+  textfield_search: ^0.10.0
+  material_dialogs: ^1.1.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

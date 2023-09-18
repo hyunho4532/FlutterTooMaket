@@ -6,10 +6,6 @@ import 'package:customer_manager/widgets/search_screen.dart';
 import 'package:customer_manager/widgets/shopping_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MainPage());
-}
-
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
