@@ -5,17 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp (
-    MultiProvider (
-      providers: [
-        ChangeNotifierProvider(create: (context) => AddressSearchProvider())
-      ],
-
-      child: const MaterialApp (
-        home: RegisterScreen(),
-      ),
-    )
-  );
+  runApp(const RegisterScreen());
 }
 
 class RegisterScreen extends StatefulWidget {
@@ -77,119 +67,193 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     _addressController = TextEditingController();
 
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          child: Stack(
-            children: [
+    return Scaffold(
+      body: Container(
+        child: Stack(
+          children: [
+            Positioned(
+              top: 40,
+              child: Container(
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                height: 100,
+                child: DefaultTextStyle(
+                  style: const TextStyle(
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontFamily: 'Yeongdeok_Haeparang_KR'
+                  ),
+                  child: typerTitleAnimatedText, // 변경 필요
+                ),
+              ),
+            ),
+
+            if (showSecondText)
               Positioned(
-                top: 40,
-                child: Container(
-                  margin: const EdgeInsets.only(left: 20, right: 20),
-                  height: 100,
-                  child: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 30,
-                      color: Colors.black,
+                top: 100,
+                left: 20,
+                child: DefaultTextStyle (
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                  child: typerBodyAnimatedText, // 변경 필요
+                ),
+              ),
+
+            if (showThreeText)
+              Positioned(
+                top: 180,
+                left: 20,
+                child: DefaultTextStyle(
+                  style: const TextStyle(
+                    fontSize: 22,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  child: fadeAnimatedText, // 변경 필요
+                ),
+              ),
+
+            if (showFourText)
+              Positioned(
+                top: 240,
+                left: 20,
+                child: SizedBox(
+                  width: 380,
+                  height: 40,
+                  child: Form (
+                    child: TextFormField (
+                      decoration: const InputDecoration (
+                        hintText: '이메일을 입력해주세요.',
+
+                        enabledBorder: OutlineInputBorder (
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(color: Colors.black26),
+                        ),
+
+                        fillColor: Colors.white70,
+                        filled: true,
+                      ),
                     ),
-                    child: typerTitleAnimatedText, // 변경 필요
                   ),
                 ),
               ),
 
-              if (showSecondText)
-                Positioned(
-                  top: 100,
-                  left: 20,
-                  child: DefaultTextStyle (
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                    child: typerBodyAnimatedText, // 변경 필요
-                  ),
-                ),
+            if (showFourText)
+              Positioned (
+                top: 300,
+                left: 20,
+                child: SizedBox (
+                  width: 380,
+                  height: 40,
 
-              if (showThreeText)
-                Positioned(
-                  top: 180,
-                  left: 20,
-                  child: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    child: fadeAnimatedText, // 변경 필요
-                  ),
-                ),
+                  child: Form (
+                    child: TextFormField (
+                      decoration: const InputDecoration (
+                        hintText: '비밀번호를 입력해주세요.',
 
-              if (showFourText)
-                Positioned(
-                  top: 240,
-                  left: 20,
-                  child: SizedBox(
-                    width: 280,
-                    height: 40,
-                    child: ElevatedButton (
-                      onPressed: () {
-                        showAddressSearchProvider.setShowDialog(true);
-                      },
+                        suffixIcon: Icon(Icons.remove_red_eye),
 
-                      child: const Text (
-                        '내 주소 조회하기',
-                        style: TextStyle (
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
+                        enabledBorder: OutlineInputBorder (
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(color: Colors.black26),
                         ),
+
+                        fillColor: Colors.white70,
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+            if (showFiveText)
+              Positioned(
+                top: 390,
+                left: 20,
+                child: SizedBox (
+                  width: 380,
+                  height: 40,
+                  child: ElevatedButton (
+                    onPressed: () {
+                      showAddressSearchProvider.setShowDialog(true);
+                    },
+
+                    style: ElevatedButton.styleFrom (
+                      shape: RoundedRectangleBorder (
+                        borderRadius: BorderRadius.circular(8.0),
+                      )
+                    ),
+
+                    child: const Text (
+                      '내 주소 조회하기',
+                      style: TextStyle (
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  )
+                ),
+              ),
+
+            if (showFiveText) Positioned (
+                top: 390,
+                left: 20,
+
+                child: Padding (
+                  padding: const EdgeInsets.only(top: 64.0),
+                  child: SizedBox (
+                    width: 300,
+                    height: 40,
+
+                    child: Text (
+
+                      selectedAddress != null
+                          ? '주소: $selectedAddress'
+                          : '주소 조회해주세요',
+
+                      style: const TextStyle (
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20.0,
                       ),
                     )
                   ),
                 ),
+              ),
 
-              if (showFiveText)
-                Positioned (
-                  top: 270,
-                  left: 20,
+            if (showFiveText) Positioned (
+              top: 520,
+              left: 20,
 
-                  child: Padding (
-                    padding: const EdgeInsets.only(top: 64.0),
-                    child: SizedBox (
-                      width: 300,
-                      height: 40,
+              child: Padding (
+                padding: const EdgeInsets.only(top: 64.0),
+                child: SizedBox (
+                  width: 460,
+                  height: 50,
 
-                      child: Text (
-                        '주소: $selectedAddress',
+                  child: ElevatedButton (
+                    onPressed: () {
 
-                        style: const TextStyle (
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
-                        ),
-                      )
+                    },
+
+                    style: ElevatedButton.styleFrom (
+                      backgroundColor: Colors.blueAccent
+                    ),
+
+                    child: const Text (
+                      '회원가입 완료',
+                      style: TextStyle (
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
                     ),
                   ),
                 ),
+              ),
+            ),
 
-              if (showFiveText)
-                Positioned(
-                  top: 370,
-                  left: 20,
-                  child: SizedBox(
-                      width: 280,
-                      height: 40,
-                      child: Form (
-                        child: TextFormField (
-                          decoration: const InputDecoration (
-                            hintText: '이메일을 입력해주세요.',
-                          ),
-                        ),
-                      ),
-                  ),
-                ),
-
-              if (showAddressSearchProvider.showDialog) const AddressSearchDialog(),
-            ],
-          ),
+            if (showAddressSearchProvider.showDialog) const AddressSearchDialog(),
+          ],
         ),
       ),
     );
