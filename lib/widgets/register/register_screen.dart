@@ -1,5 +1,6 @@
 import 'package:customer_manager/const/animated_text_kit.dart';
 import 'package:customer_manager/const/show_address_search_dialog.dart';
+import 'package:customer_manager/const/show_category_list.dart';
 import 'package:customer_manager/provider/address_search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,9 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _addressController = TextEditingController();
   List<String> addressResults = []; // 주소 검색 결과를 저장할 리스트
+
+  final _valueList = ['도서', '전자기기/부품', '피부/미백', '화장품'];
+  var _selectedValue = '도서';
 
   @override
   void dispose() {
@@ -172,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 top: 390,
                 left: 20,
                 child: SizedBox (
-                  width: 380,
+                  width: 300,
                   height: 40,
                   child: ElevatedButton (
                     onPressed: () {
@@ -221,14 +225,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
 
+            if (showFiveText)
+              const Positioned (
+                top: 480,
+                left: 20,
+
+                child: Padding (
+                  padding: EdgeInsets.only(top: 80.0),
+                  child: Text (
+                    '원하는 카테고리 선택: '
+                  ),
+                ),
+              ),
+
+            if (showFiveText)
+
+              Positioned (
+                top: 480,
+                left: 170,
+
+                child: Padding (
+                  padding: const EdgeInsets.only(top: 64.0),
+                  child: SizedBox (
+                    child: DropdownButton(
+                      value: _selectedValue,
+                      items: _valueList.map((value) {
+                        return DropdownMenuItem (
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+
+                      onChanged: (value) {
+                      setState(() {
+                        _selectedValue = value!;
+                      });
+                      },
+                      )
+                    ),
+                  ),
+                ),
+
             if (showFiveText) Positioned (
-              top: 520,
+              top: 560,
               left: 20,
 
               child: Padding (
                 padding: const EdgeInsets.only(top: 64.0),
                 child: SizedBox (
-                  width: 460,
+                  width: 300,
                   height: 50,
 
                   child: ElevatedButton (
