@@ -1,6 +1,7 @@
 import 'package:customer_manager/provider/address_search_provider.dart';
 import 'package:customer_manager/widgets/login/login_screen.dart';
 import 'package:customer_manager/widgets/register/register_screen.dart';
+import 'package:customer_manager/widgets/register/update_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +89,7 @@ class _WelcomeDetailScreenState extends State<WelcomeDetailScreen> {
                 onPressed: () {
                   Navigator.push (
                     context,
-                    MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                    MaterialPageRoute(builder: (context) => const UpdateRegisterScreen()),
                   );
                 },
 
