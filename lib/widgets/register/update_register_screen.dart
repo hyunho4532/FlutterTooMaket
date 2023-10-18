@@ -1,4 +1,8 @@
+import 'package:customer_manager/const/register_animated_text_kit.dart';
+import 'package:customer_manager/widgets/register/ref/build_register_main_title.dart';
+import 'package:customer_manager/widgets/register/ref/build_register_title_section.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class UpdateRegisterScreen extends StatefulWidget {
   const UpdateRegisterScreen({Key? key}) : super(key: key);
@@ -28,6 +32,14 @@ class PageViewRegisterWidget extends StatefulWidget {
 class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
 
   final PageController _pageController = PageController(initialPage: 0);
+  bool isShowBodyText = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _showBodyTextDelayed();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +47,22 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
       scrollDirection: Axis.horizontal,
       controller: _pageController,
       children: [
-        Container(
-          color: Colors.blue.withOpacity(0.5),
-          child: Center(
-            child: Text('첫 번째 페이지',style: TextStyle(fontSize: 50),),
+        Container (
+          child: Column (
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+
+              const BuildRegisterMainTitle(),
+
+
+
+              if (isShowBodyText)
+                const BuildRegisterSectionTitle(),
+
+              Lottie.asset('assets/lottie/register.json', width: MediaQuery.of(context).size.width),
+            ],
           ),
         ),
         Container(
@@ -54,6 +78,15 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showBodyTextDelayed() {
+    Future.delayed (const Duration(seconds: 2), () {
+      setState(() {
+        isShowBodyText = true;
+      });
+    }
     );
   }
 }

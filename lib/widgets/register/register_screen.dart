@@ -1,4 +1,4 @@
-import 'package:customer_manager/const/animated_text_kit.dart';
+import 'package:customer_manager/const/register_animated_text_kit.dart';
 import 'package:customer_manager/const/show_address_search_dialog.dart';
 import 'package:customer_manager/const/show_category_list.dart';
 import 'package:customer_manager/provider/address_search_provider.dart';
