@@ -18,6 +18,7 @@ class _BuildRegisterMainTitleState extends State<BuildRegisterMainTitle> {
           fontSize: 26.0,
           fontWeight: FontWeight.bold,
           color: Colors.black,
+          fontFamily: 'Yeongdeok_Haeparang_KR',
         ),
         child: typerTitleAnimatedText,
       ),

@@ -37,13 +37,15 @@ dependencies:
   animated_text_kit: ^4.2.2
   textfield_search: ^0.10.0
   material_dialogs: ^1.1.4
-  sqlite3: ^2.1.0
-  path: ^1.8.3
+  pretty_textfield: ^0.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   provider: ^5.0.0
+  material_text_fields: ^1.0.3
+
+  pretty_button: ^0.0.7
 
   lottie: ^2.6.0
 
@@ -92,6 +94,11 @@ flutter:
       fonts:
         - asset: assets/font/Yeongdeok-Haeparang.ttf
           weight: 300
+
+    - family: Taebaek_KR
+      fonts:
+        - asset: assets/font/Taebaek.ttf
+          weight: 100
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -12,14 +12,14 @@ class _BuildRegisterSectionTitleState extends State<BuildRegisterSectionTitle> {
   @override
   Widget build(BuildContext context) {
     return Padding (
-      padding: const EdgeInsets.only(left: 24.0, top: 20.0),
+      padding: const EdgeInsets.only(left: 24.0, top: 24.0),
       child: DefaultTextStyle (
         style: const TextStyle (
-          fontSize: 16.0,
-          color: Colors.black,
+          fontSize: 14.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.blueAccent,
         ),
-
-        child: typerBodyAnimatedText,
+        child: fadeAnimatedText,
       ),
     );
   }
