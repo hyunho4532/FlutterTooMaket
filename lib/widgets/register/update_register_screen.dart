@@ -1,3 +1,5 @@
+import 'package:customer_manager/const/register_animated_text_kit.dart';
+import 'package:customer_manager/widgets/register/ref/build_register_prev_button.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_main.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_section.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_sub_main.dart';
@@ -6,6 +8,8 @@ import 'package:lottie/lottie.dart';
 import 'package:material_text_fields/material_text_fields.dart';
 import 'package:material_text_fields/utils/form_validation.dart';
 import 'package:pretty_button/pretty_button.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UpdateRegisterScreen extends StatefulWidget {
   const UpdateRegisterScreen({Key? key}) : super(key: key);
@@ -17,8 +21,8 @@ class UpdateRegisterScreen extends StatefulWidget {
 class _UpdateRegisterScreenState extends State<UpdateRegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp (
-      home: Scaffold (
+    return const MaterialApp(
+      home: Scaffold(
         body: PageViewRegisterWidget(),
       ),
     );
@@ -33,7 +37,6 @@ class PageViewRegisterWidget extends StatefulWidget {
 }
 
 class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
-
   final PageController _pageController = PageController(initialPage: 0);
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
@@ -45,6 +48,31 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   bool isShowEmailText = false;
   bool isShowPasswordText = false;
   bool isShowNextButton = false;
+
+  List<String> addressList = [];
+
+  Future<void> fetchAddress(String query) async {
+    final response = await http.get(
+        Uri.parse(
+            'https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
+        headers: {'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'});
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final documents = data['documents'];
+
+      List<String> addresses = [];
+
+      for (var document in documents) {
+        String address = document['address_name'];
+        addresses.add(address);
+      }
+
+      setState(() {
+        addressList = addresses;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -74,14 +102,14 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
         Container(
           child: Stack(
             children: [
-              Positioned (
+              Positioned(
                 top: 420,
                 left: 0,
                 right: 0,
                 bottom: 0,
                 child: Lottie.asset(
                   'assets/lottie/register.json',
-                  width: 270 ,
+                  width: 270,
                   fit: BoxFit.fill, // or BoxFit.cover based on your preference
                 ),
               ),
@@ -97,11 +125,11 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                     const BuildRegisterMainTitle(),
                     if (isShowBodyText) const BuildRegisterSubMainTitle(),
                     if (isShowSectionText) const BuildRegisterSectionTitle(),
-
                     if (isShowEmailText)
-                      Padding (
-                        padding: const EdgeInsets.only(top: 60.0, left: 24.0, right: 24.0),
-                        child: MaterialTextField (
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 60.0, left: 24.0, right: 24.0),
+                        child: MaterialTextField(
                           keyboardType: TextInputType.emailAddress,
                           hint: '이메일을 입력해주세요',
                           labelText: 'Email',
@@ -111,11 +139,11 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                           validator: FormValidation.emailTextField,
                         ),
                       ),
-
                     if (isShowPasswordText)
-                      Padding (
-                        padding: const EdgeInsets.only(top: 30.0, left: 24.0, right: 24.0),
-                        child: MaterialTextField (
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 30.0, left: 24.0, right: 24.0),
+                        child: MaterialTextField(
                           keyboardType: TextInputType.emailAddress,
                           hint: '패스워드를 입력해주세요',
                           labelText: 'Password',
@@ -125,47 +153,49 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                           validator: FormValidation.emailTextField,
                         ),
                       ),
-
-
                     if (isShowNextButton)
-
-                      Padding (
-                        padding: const EdgeInsets.only(top: 24.0, left: 24.0),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24.0, left: 12.0),
                         child: ValueListenableBuilder<bool>(
                           valueListenable: _isEmailValid,
                           builder: (context, isEmailValid, child) {
                             return ValueListenableBuilder<bool>(
                               valueListenable: _isPasswordValid,
                               builder: (context, isPasswordValid, child) {
-                                return PrettyButton (
-                              
+                                return PrettyButton(
                                   isDisable: false,
                                   blurRadius: 5,
                                   spreadRadius: 1,
-                                  topShadowColor: Theme.of(context).colorScheme.onPrimary,
-                                  bottomShadowColor: Theme.of(context).colorScheme.primary,
-                                  backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+                                  topShadowColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  bottomShadowColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .outlineVariant,
                                   width: 60,
                                   height: 50,
                                   borderRadius: 15,
                                   innerPadding: const EdgeInsets.all(8.0),
                                   outerPadding: const EdgeInsets.all(8.0),
                                   onTap: () {
-                                    _isEmailValid.value && _isPasswordValid.value ?
-                                    _pageController.animateToPage(
-                                        1,
-                                        duration: const Duration(seconds: 2),
-                                        curve: Curves.easeInOut
-                                    )
+                                    _isEmailValid.value &&
+                                            _isPasswordValid.value
+                                        ? _pageController.animateToPage(1,
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            curve: Curves.easeInOut)
                                         : null;
-                                    },
-                                    child: Text('다음',
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.primary,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  },
+                                  child: Text(
+                                    '다음',
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                     ),
+                                  ),
                                 );
                               },
                             );
@@ -179,34 +209,69 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
           ),
         ),
         Container(
-          color: Colors.orangeAccent.withOpacity(0.5),
-          child: const Center(
-            child: Text(
-              '두 번째 페이지',
-              style: TextStyle(fontSize: 50),
-            ),
-          ),
-        ),
-        Container(
-          color: Colors.cyanAccent.withOpacity(0.5),
-          child: const Center(
-            child: Text(
-              '세 번째 페이지',
-              style: TextStyle(fontSize: 50),
-            ),
-          ),
-        ),
+            child: Column (
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+                const Padding (
+                  padding: EdgeInsets.only(left: 24.0, top: 48.0),
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: Text(
+                      '마지막으로 주소를 입력해주세요!!',
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24.0, top: 40.0),
+                    child: Form(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: '주소를 입력해주세요',
+                          hintStyle: TextStyle(
+                            color: Colors.black,
+                          )
+                        ),
+                        onChanged: (value) {
+                          fetchAddress(value);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+                ListView.builder (
+                  itemCount: addressList.length,
+                  itemBuilder: (context, index) {
+                    return ListTile (
+                      title: Text(addressList[index]),
+                      onTap: () {
+
+                      },
+                    );
+                  },
+                ),
+
+                BuildRegisterPrevButton(pageController: _pageController),
+            ],
+          )),
       ],
     );
   }
 
   void _showBodyTextDelayed() {
-    Future.delayed (const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         isShowBodyText = true;
       });
-    }
-    );
+    });
   }
 
   void _showBodySectionDelayed() {
@@ -228,10 +293,9 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
 
   void _showBodyNextButtonDelayed() {
     Future.delayed(const Duration(seconds: 8), () {
-       setState(() {
-         isShowNextButton = true;
-       });
+      setState(() {
+        isShowNextButton = true;
+      });
     });
   }
 }
-

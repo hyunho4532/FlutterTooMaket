@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final response = await http.get (
       Uri.parse('https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
       headers: {
-        'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030 '
+        'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'
       }
     );
 
