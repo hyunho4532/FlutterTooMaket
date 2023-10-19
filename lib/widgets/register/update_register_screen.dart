@@ -1,5 +1,6 @@
 import 'package:customer_manager/const/register_animated_text_kit.dart';
-import 'package:customer_manager/widgets/register/ref/build_register_prev_button.dart';
+import 'package:customer_manager/widgets/register/ref/button/build_register_finish_button.dart';
+import 'package:customer_manager/widgets/register/ref/button/build_register_prev_button.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_main.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_section.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_sub_main.dart';
@@ -272,9 +273,15 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
               ),
             ),
 
-            BuildRegisterPrevButton(pageController: _pageController),
-        ],
-          ),
+            Row (
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BuildRegisterPrevButton(pageController: _pageController),
+                BuildRegisterFinishButton(emailTextController: _emailTextController, passwordTextController: _passwordTextController),
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }
