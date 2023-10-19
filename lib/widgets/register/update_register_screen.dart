@@ -51,18 +51,21 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
 
   List<String> addressList = [];
 
-  Future<void> fetchAddress(String query) async {
-    final response = await http.get(
-        Uri.parse(
-            'https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
-        headers: {'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'});
+  String addressValues = "";
+
+  Future<void> fetchAddresses(String query) async {
+    final response = await http.get (
+        Uri.parse('https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
+        headers: {
+          'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'
+        }
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final documents = data['documents'];
 
       List<String> addresses = [];
-
       for (var document in documents) {
         String address = document['address_name'];
         addresses.add(address);
@@ -94,13 +97,13 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
+    return PageView (
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.horizontal,
       controller: _pageController,
       children: [
-        Container(
-          child: Stack(
+        Expanded (
+          child: Stack (
             children: [
               Positioned(
                 top: 420,
@@ -208,60 +211,73 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
             ],
           ),
         ),
-        Container(
-            child: Column (
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
 
-              children: [
-                const Padding (
-                  padding: EdgeInsets.only(left: 24.0, top: 48.0),
-                  child: DefaultTextStyle(
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    child: Text(
-                      '마지막으로 주소를 입력해주세요!!',
-                    ),
-                  ),
+        Column (
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            const Padding (
+              padding: EdgeInsets.only(left: 24.0, top: 48.0),
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
+                child: Text(
+                  '마지막으로 주소를 입력해주세요!!',
+                ),
+              ),
+            ),
 
-                Positioned(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 24.0, top: 40.0),
-                    child: Form(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: '주소를 입력해주세요',
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                          )
-                        ),
-                        onChanged: (value) {
-                          fetchAddress(value);
-                        },
+            SingleChildScrollView (
+              child: Positioned (
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 24.0, top: 40.0),
+                  child: Form(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: '주소를 입력해주세요',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        )
                       ),
+                      onChanged: (value) {
+                        fetchAddresses(value);
+                      },
                     ),
                   ),
                 ),
+              ),
+            ),
 
-                ListView.builder (
-                  itemCount: addressList.length,
-                  itemBuilder: (context, index) {
-                    return ListTile (
-                      title: Text(addressList[index]),
-                      onTap: () {
+            Expanded (
+              child: ListView.builder (
+                itemCount: addressList.length,
+                itemBuilder: (context, index) {
+                  return ListTile (
+                    title: Text(addressList[index]),
+                    onTap: () {
+                      setState(() {
+                        addressValues = addressList[index];
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
 
-                      },
-                    );
-                  },
-                ),
+            Text (
+              addressValues,
+              style: const TextStyle (
+                color: Colors.black,
+              ),
+            ),
 
-                BuildRegisterPrevButton(pageController: _pageController),
-            ],
-          )),
+            BuildRegisterPrevButton(pageController: _pageController),
+        ],
+          ),
       ],
     );
   }
