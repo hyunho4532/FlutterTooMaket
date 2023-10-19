@@ -1,11 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_button/pretty_button.dart';
 
 // ignore: must_be_immutable
 class BuildRegisterFinishButton extends StatefulWidget {
 
-  TextEditingController emailTextController = TextEditingController();
-  TextEditingController passwordTextController = TextEditingController();
+  TextEditingController emailTextController;
+  TextEditingController passwordTextController;
 
   BuildRegisterFinishButton({Key? key, required this.emailTextController, required this.passwordTextController}) : super(key: key);
 
@@ -14,6 +15,7 @@ class BuildRegisterFinishButton extends StatefulWidget {
 }
 
 class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,17 @@ class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
         borderRadius: 15,
         innerPadding: const EdgeInsets.all(8.0),
         outerPadding: const EdgeInsets.all(8.0),
-        onTap: () {
 
+        onTap: () {
+          _auth.createUserWithEmailAndPassword(
+              email: widget.emailTextController.text.toString(),
+              password: widget.passwordTextController.text.toString())
+            .then((value) => {
+              print('회원가입 성공')
+            })
+            .catchError((error) => {
+              print('error $error')
+            });
         },
         child: Text('완료',
           style: TextStyle(
