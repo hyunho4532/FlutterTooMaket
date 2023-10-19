@@ -3,6 +3,7 @@ import 'package:customer_manager/widgets/register/ref/build_register_prev_button
 import 'package:customer_manager/widgets/register/ref/build_register_title_main.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_section.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_sub_main.dart';
+import 'package:customer_manager/widgets/register/ref/listview/build_register_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_text_fields/material_text_fields.dart';
@@ -232,46 +233,42 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
             ),
 
             SingleChildScrollView (
-              child: Positioned (
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 24.0, top: 40.0),
-                  child: Form(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: '주소를 입력해주세요',
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                        )
-                      ),
-                      onChanged: (value) {
-                        fetchAddresses(value);
-                      },
+              child: Padding (
+                padding: const EdgeInsets.all(24.0),
+                child: Form (
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: '주소를 입력해주세요',
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                      )
                     ),
+                    onChanged: (value) {
+                      fetchAddresses(value);
+                    },
                   ),
                 ),
               ),
             ),
 
-            Expanded (
-              child: ListView.builder (
-                itemCount: addressList.length,
-                itemBuilder: (context, index) {
-                  return ListTile (
-                    title: Text(addressList[index]),
-                    onTap: () {
-                      setState(() {
-                        addressValues = addressList[index];
-                      });
-                    },
-                  );
-                },
-              ),
+            BuildRegisterListView (
+              addressList: addressList,
+              addressValues: addressValues,
+              onAddressSelected: (address) {
+                setState(() {
+                  addressValues = address;
+                });
+              },
             ),
 
-            Text (
-              addressValues,
-              style: const TextStyle (
-                color: Colors.black,
+            Padding (
+              padding: const EdgeInsets.only(top: 48.0, left: 16.0),
+              child: Text (
+                '주소: $addressValues',
+                style: const TextStyle (
+                  color: Colors.black,
+                  fontSize: 18.0,
+                ),
               ),
             ),
 
