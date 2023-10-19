@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:customer_manager/firebase_options.dart';
+
+void main() async {
   runApp (
     MultiProvider (
       providers: [
@@ -15,6 +18,12 @@ void main() {
 
       child: const WelcomeScreen(),
     ),
+  );
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp (
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 }
 

@@ -242,8 +242,10 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                       hintText: '주소를 입력해주세요',
                       hintStyle: TextStyle(
                         color: Colors.black,
-                      )
+                      ),
+                      border: InputBorder.none
                     ),
+
                     onChanged: (value) {
                       fetchAddresses(value);
                     },
@@ -269,6 +271,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                 style: const TextStyle (
                   color: Colors.black,
                   fontSize: 18.0,
+                  fontFamily: 'DNF_KR',
                 ),
               ),
             ),

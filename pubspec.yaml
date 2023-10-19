@@ -48,6 +48,7 @@ dependencies:
   pretty_button: ^0.0.7
 
   lottie: ^2.6.0
+  firebase_core: ^2.19.0
 
 dev_dependencies:
   flutter_test:
@@ -98,6 +99,11 @@ flutter:
     - family: Taebaek_KR
       fonts:
         - asset: assets/font/Taebaek.ttf
+          weight: 100
+
+    - family: DNF_KR
+      fonts:
+        - asset: assets/font/DNF-Blade.ttf
           weight: 100
 
   # For details regarding fonts from package dependencies,
