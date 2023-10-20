@@ -1,4 +1,5 @@
 import 'package:customer_manager/provider/address_search_provider.dart';
+import 'package:customer_manager/provider/body_text_visible_provider.dart';
 import 'package:customer_manager/services/kakao_address_service.dart';
 import 'package:customer_manager/widgets/register/ref/button/build_register_finish_button.dart';
 import 'package:customer_manager/widgets/register/ref/button/build_register_prev_button.dart';
@@ -47,9 +48,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   final ValueNotifier<bool> _isPasswordValid = ValueNotifier<bool>(false);
 
   KaKaoAddressService addressService = KaKaoAddressService();
+  BodyTextVisibleProvider bodyTextVisibleProvider = BodyTextVisibleProvider();
 
-  bool isShowBodyText = false;
-  bool isShowSectionText = false;
   bool isShowEmailText = false;
   bool isShowPasswordText = false;
   bool isShowNextButton = false;
@@ -115,8 +115,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const BuildRegisterMainTitle(),
-                    if (isShowBodyText) const BuildRegisterSubMainTitle(),
-                    if (isShowSectionText) const BuildRegisterSectionTitle(),
+                    if (bodyTextVisibleProvider.isShowBodyText) const BuildRegisterSubMainTitle(),
+                    if (bodyTextVisibleProvider.isShowSectionText) const BuildRegisterSectionTitle(),
 
                     if (isShowEmailText)
                       BuildEmailTextFormField (
@@ -270,7 +270,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   void _showBodyTextDelayed() {
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
-        isShowBodyText = true;
+        bodyTextVisibleProvider.setIsShowBodyText(true);
       });
     });
   }
@@ -278,7 +278,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   void _showBodySectionDelayed() {
     Future.delayed(const Duration(seconds: 4), () {
       setState(() {
-        isShowSectionText = true;
+        bodyTextVisibleProvider.setIsShowSectionText(true);
       });
     });
   }
