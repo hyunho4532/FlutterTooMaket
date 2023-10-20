@@ -18,6 +18,7 @@ class BuildRegisterListView extends StatefulWidget {
 class _BuildRegisterListViewState extends State<BuildRegisterListView> {
   @override
   Widget build(BuildContext context) {
+
     return Expanded (
       child: ListView.builder (
         itemCount: widget.addressList.length,

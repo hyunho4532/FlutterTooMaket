@@ -1,19 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-class AddressSearchProvider with ChangeNotifier {
-  String? selectedAddress;
+class AddressProvider with ChangeNotifier {
+  List<String> _addressList = [];
 
-  bool _showDialog = false;
+  List<String> get addressList => _addressList;
 
-  bool get showDialog => _showDialog;
-
-  void setShowDialog(bool value) {
-    _showDialog = value;
-    notifyListeners();
-  }
-
-  void closeDialog() {
-    _showDialog = false;
-    notifyListeners();
+  void setAddresses(List<String> addresses) {
+    _addressList = addresses;
   }
 }

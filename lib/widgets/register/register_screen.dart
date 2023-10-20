@@ -1,3 +1,5 @@
+import 'package:customer_manager/provider/address_search_provider.dart';
+import 'package:customer_manager/services/kakao_address_service.dart';
 import 'package:customer_manager/widgets/register/ref/button/build_register_finish_button.dart';
 import 'package:customer_manager/widgets/register/ref/button/build_register_prev_button.dart';
 import 'package:customer_manager/widgets/register/ref/build_register_title_main.dart';
@@ -6,6 +8,7 @@ import 'package:customer_manager/widgets/register/ref/build_register_title_sub_m
 import 'package:customer_manager/widgets/register/ref/form/build_email_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_password_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/listview/build_register_list_view.dart';
+import 'package:customer_manager/widgets/register/ref/lottie/build_lottie_file.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_text_fields/material_text_fields.dart';
@@ -55,30 +58,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   List<String> addressList = [];
 
   String addressValues = "";
-
-  Future<void> fetchAddresses(String query) async {
-    final response = await http.get (
-        Uri.parse('https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
-        headers: {
-          'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'
-        }
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final documents = data['documents'];
-
-      List<String> addresses = [];
-      for (var document in documents) {
-        String address = document['address_name'];
-        addresses.add(address);
-      }
-
-      setState(() {
-        addressList = addresses;
-      });
-    }
-  }
+  AddressProvider addressProvider = AddressProvider();
+  KaKaoAddressService addressService = KaKaoAddressService();
 
   @override
   void initState() {
@@ -108,17 +89,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
         Expanded (
           child: Stack (
             children: [
-              Positioned(
-                top: 420,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Lottie.asset(
-                  'assets/lottie/register.json',
-                  width: 270,
-                  fit: BoxFit.fill, // or BoxFit.cover based on your preference
-                ),
-              ),
+              const BuildLottieFile(),
+
               Positioned(
                 top: 0,
                 left: 0,
@@ -129,6 +101,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const BuildRegisterMainTitle(),
+                    
                     if (isShowBodyText) const BuildRegisterSubMainTitle(),
                     if (isShowSectionText) const BuildRegisterSectionTitle(),
 
@@ -241,7 +214,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                     ),
 
                     onChanged: (value) {
-                      fetchAddresses(value);
+                      addressService.fetchAddresses(value);
                     },
                   ),
                 ),
@@ -249,7 +222,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
             ),
 
             BuildRegisterListView (
-              addressList: addressList,
+              addressList: addressProvider.addressList,
               addressValues: addressValues,
               onAddressSelected: (address) {
                 setState(() {

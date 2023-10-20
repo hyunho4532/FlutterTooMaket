@@ -12,7 +12,7 @@ void main() async {
   runApp (
     MultiProvider (
       providers: [
-        ChangeNotifierProvider(create: (context) => AddressSearchProvider())
+        ChangeNotifierProvider(create: (context) => AddressProvider())
       ],
 
       child: const WelcomeScreen(),
