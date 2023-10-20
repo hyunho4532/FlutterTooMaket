@@ -8,11 +8,8 @@ import 'package:customer_manager/widgets/register/ref/build_register_title_sub_m
 import 'package:customer_manager/widgets/register/ref/form/build_email_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_password_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/listview/build_register_list_view.dart';
-import 'package:customer_manager/widgets/register/ref/lottie/build_lottie_file.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:material_text_fields/material_text_fields.dart';
-import 'package:material_text_fields/utils/form_validation.dart';
 import 'package:pretty_button/pretty_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -45,9 +42,11 @@ class PageViewRegisterWidget extends StatefulWidget {
 class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   final PageController _pageController = PageController(initialPage: 0);
   late TextEditingController _emailTextController = TextEditingController();
-  TextEditingController _passwordTextController = TextEditingController();
+  late TextEditingController _passwordTextController = TextEditingController();
   final ValueNotifier<bool> _isEmailValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> _isPasswordValid = ValueNotifier<bool>(false);
+
+  KaKaoAddressService addressService = KaKaoAddressService();
 
   bool isShowBodyText = false;
   bool isShowSectionText = false;
@@ -58,8 +57,14 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   List<String> addressList = [];
 
   String addressValues = "";
+
   AddressProvider addressProvider = AddressProvider();
-  KaKaoAddressService addressService = KaKaoAddressService();
+
+  void updateAddressList(List<String> addresses) {
+    setState(() {
+      addressProvider.setAddresses(addresses);
+    });
+  }
 
   @override
   void initState() {
@@ -89,8 +94,17 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
         Expanded (
           child: Stack (
             children: [
-              const BuildLottieFile(),
-
+              Positioned(
+                top: 420,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Lottie.asset(
+                  'assets/lottie/register.json',
+                  width: 270,
+                  fit: BoxFit.fill, // or BoxFit.cover based on your preference
+                ),
+              ),
               Positioned(
                 top: 0,
                 left: 0,
@@ -101,7 +115,6 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const BuildRegisterMainTitle(),
-                    
                     if (isShowBodyText) const BuildRegisterSubMainTitle(),
                     if (isShowSectionText) const BuildRegisterSectionTitle(),
 
@@ -119,9 +132,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                       BuildPasswordTextFormField (
                         passwordTextController: _passwordTextController,
                         onPasswordSelected: (password) {
-                          setState(() {
-                            _passwordTextController = password as TextEditingController;
-                          });
+                          _passwordTextController = password as TextEditingController;
                         }
                       ),
 
@@ -214,7 +225,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                     ),
 
                     onChanged: (value) {
-                      addressService.fetchAddresses(value);
+                      addressService.fetchAddresses(value, updateAddressList);
                     },
                   ),
                 ),

@@ -3,15 +3,15 @@ import 'dart:convert';
 import '../provider/address_search_provider.dart';
 
 class KaKaoAddressService {
-
   AddressProvider addressProvider = AddressProvider();
 
-  Future<void> fetchAddresses(String query) async {
-    final response = await http.get (
-        Uri.parse('https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
-        headers: {
-          'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'
-        }
+  Future<void> fetchAddresses(String query, Function(List<String>) callback) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://dapi.kakao.com/v2/local/search/address.json?query=$query'),
+      headers: {
+        'Authorization': 'KakaoAK 4e21750c2b8367ad9b5d31de6b0e8030'
+      },
     );
 
     if (response.statusCode == 200) {
@@ -24,9 +24,7 @@ class KaKaoAddressService {
         addresses.add(address);
       }
 
-      addressProvider.setAddresses(addresses);
-
-      print(addressProvider.addressList);
+      callback(addresses);
     }
   }
 }
