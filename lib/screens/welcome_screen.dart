@@ -55,107 +55,109 @@ class _WelcomeDetailScreenState extends State<WelcomeDetailScreen> {
     return MaterialApp (
       debugShowCheckedModeBanner: false,
       home: Scaffold (
-        body: Column (
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: SingleChildScrollView (
+          child: Column (
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
 
-          children: [
-            Padding (
-              padding: const EdgeInsets.all(20.0),
-              child: Lottie.asset('assets/lottie/welcome.json'),
-            ),
-
-            const Padding (
-              padding: EdgeInsets.only(top: 20.0, left: 24.0),
-              child: Text (
-                '안녕하세요! 토마켓입니다!',
-                style: TextStyle (
-                  color: Colors.black,
-                  fontSize: 32.0,
-                  fontFamily: 'Yeongdeok_Haeparang_KR',
-                  fontWeight: FontWeight.bold,
-                ),
+            children: [
+              Padding (
+                padding: const EdgeInsets.all(20.0),
+                child: Lottie.asset('assets/lottie/welcome.json'),
               ),
-            ),
 
-            const Padding (
-              padding: EdgeInsets.only(top: 20.0, left: 24.0),
-              child: Text (
-                '근처 이웃들과 중고로 물건들을 구매해보세요!',
-                style: TextStyle (
-                  color: Colors.black,
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-
-            Padding (
-              padding: const EdgeInsets.only(top: 50.0, left: 24.0, right: 24.0),
-              child: SizedBox (
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-
-                child: ElevatedButton (
-                  onPressed: () {
-                    Navigator.push (
-                      context,
-                      MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                    );
-                  },
-
-                  child: const Text (
-                    '회원가입하기',
-                    style: TextStyle (
-                      fontWeight: FontWeight.bold,
-                    ),
+              const Padding (
+                padding: EdgeInsets.only(top: 20.0, left: 24.0),
+                child: Text (
+                  '안녕하세요! 토마켓입니다!',
+                  style: TextStyle (
+                    color: Colors.black,
+                    fontSize: 32.0,
+                    fontFamily: 'Yeongdeok_Haeparang_KR',
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ),
 
-            Padding (
-              padding: const EdgeInsets.only(top: 8.0, left: 24.0, right: 24.0),
-              child: SizedBox (
+              const Padding (
+                padding: EdgeInsets.only(top: 20.0, left: 24.0),
+                child: Text (
+                  '근처 이웃들과 중고로 물건들을 구매해보세요!',
+                  style: TextStyle (
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+
+              Padding (
+                padding: const EdgeInsets.only(top: 50.0, left: 24.0, right: 24.0),
+                child: SizedBox (
                   width: MediaQuery.of(context).size.width,
                   height: 45,
 
-                  child: const Center (
-                    child: Text (
-                      'or',
+                  child: ElevatedButton (
+                    onPressed: () {
+                      Navigator.push (
+                        context,
+                        MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                      );
+                    },
+
+                    child: const Text (
+                      '회원가입하기',
                       style: TextStyle (
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
+                  ),
+                ),
               ),
-            ),
 
-            Padding (
-              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-              child: SizedBox (
-                  width: MediaQuery.of(context).size.width,
-                  height: 45,
+              Padding (
+                padding: const EdgeInsets.only(top: 8.0, left: 24.0, right: 24.0),
+                child: SizedBox (
+                    width: MediaQuery.of(context).size.width,
+                    height: 45,
 
-                  child: Center (
-                    child: GestureDetector (
-                      onTap: () {
-                        Navigator.of(context).push (
-                            MaterialPageRoute(builder: (context) => const LoginScreen())
-                        );
-                      },
-
-                      child: const Text (
-                        '이미 계정이 있으신가요?',
+                    child: const Center (
+                      child: Text (
+                        'or',
                         style: TextStyle (
                           fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
                         ),
                       ),
-                    ),
-                  )
+                    )
+                ),
               ),
-            ),
-          ],
+
+              Padding (
+                padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                child: SizedBox (
+                    width: MediaQuery.of(context).size.width,
+                    height: 45,
+
+                    child: Center (
+                      child: GestureDetector (
+                        onTap: () {
+                          Navigator.of(context).push (
+                              MaterialPageRoute(builder: (context) => const LoginScreen())
+                          );
+                        },
+
+                        child: const Text (
+                          '이미 계정이 있으신가요?',
+                          style: TextStyle (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                    )
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

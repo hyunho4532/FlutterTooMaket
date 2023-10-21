@@ -60,6 +60,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
 
   AddressProvider addressProvider = AddressProvider();
 
+  bool isRegisterSelected = true;
+
   void updateAddressList(List<String> addresses) {
     setState(() {
       addressProvider.setAddresses(addresses);
@@ -258,7 +260,12 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BuildRegisterPrevButton(pageController: _pageController),
-                BuildRegisterFinishButton(emailTextController: _emailTextController, passwordTextController: _passwordTextController),
+                BuildRegisterFinishButton (
+                  emailTextController: _emailTextController,
+                  passwordTextController: _passwordTextController,
+                  isRegisterSelected: isRegisterSelected,
+                  isLoginSelected: false,
+                ),
               ],
             ),
           ],

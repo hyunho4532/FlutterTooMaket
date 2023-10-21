@@ -1,8 +1,9 @@
 import 'package:customer_manager/main.dart';
-import 'package:customer_manager/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_button/pretty_button.dart';
+
+typedef AuthTypeCallback = void Function(bool);
 
 // ignore: must_be_immutable
 class BuildRegisterFinishButton extends StatefulWidget {
@@ -10,7 +11,16 @@ class BuildRegisterFinishButton extends StatefulWidget {
   TextEditingController emailTextController;
   TextEditingController passwordTextController;
 
-  BuildRegisterFinishButton({Key? key, required this.emailTextController, required this.passwordTextController}) : super(key: key);
+  bool isRegisterSelected = false;
+  bool isLoginSelected = false;
+
+  BuildRegisterFinishButton({
+    Key? key,
+    required this.emailTextController,
+    required this.passwordTextController,
+    required this.isRegisterSelected,
+    required this.isLoginSelected,
+  }) : super(key: key);
 
   @override
   State<BuildRegisterFinishButton> createState() => _BuildRegisterFinishButtonState();
@@ -37,27 +47,50 @@ class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
         outerPadding: const EdgeInsets.all(8.0),
 
         onTap: () {
-          _auth.createUserWithEmailAndPassword(
-              email: widget.emailTextController.text.toString(),
-              password: widget.passwordTextController.text.toString())
-            .then((value) => {
-              Navigator.push (
-                context,
-                PageRouteBuilder (
-                  pageBuilder: (context, Animation<double> animation1, Animation<double> animation2) {
-                    return const MainPage();
-                  },
 
-                  transitionDuration: Duration.zero,
-                  reverseTransitionDuration: Duration.zero,
+          if (widget.isRegisterSelected) {
+            _auth.createUserWithEmailAndPassword(
+                email: widget.emailTextController.text.toString(),
+                password: widget.passwordTextController.text.toString())
+              .then((value) => {
+                Navigator.push (
+                  context,
+                  PageRouteBuilder (
+                    pageBuilder: (context, Animation<double> animation1, Animation<double> animation2) {
+                      return const MainPage();
+                    },
+
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  )
                 )
-              )
-            })
+              })
 
             // ignore: invalid_return_type_for_catch_error
             .catchError((error) => {
               print('error $error')
             });
+          }
+
+          if (widget.isLoginSelected) {
+            _auth.signInWithEmailAndPassword (
+              email: widget.emailTextController.text.toString(),
+              password: widget.passwordTextController.text.toString())
+              .then((value) => {
+                Navigator.push (
+                  context,
+                  PageRouteBuilder (
+                    pageBuilder: (context, Animation<double> animation1, Animation<double> animation2) {
+                      return const MainPage();
+                    },
+
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  )
+                )
+              }
+            );
+          }
         },
         child: Text('완료',
           style: TextStyle(
