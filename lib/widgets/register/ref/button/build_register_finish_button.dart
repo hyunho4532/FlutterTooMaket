@@ -1,4 +1,5 @@
 import 'package:customer_manager/main.dart';
+import 'package:customer_manager/services/auth/firebaseAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_button/pretty_button.dart';
@@ -49,46 +50,18 @@ class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
         onTap: () {
 
           if (widget.isRegisterSelected) {
-            _auth.createUserWithEmailAndPassword(
-                email: widget.emailTextController.text.toString(),
-                password: widget.passwordTextController.text.toString())
-              .then((value) => {
-                Navigator.push (
-                  context,
-                  PageRouteBuilder (
-                    pageBuilder: (context, Animation<double> animation1, Animation<double> animation2) {
-                      return const MainPage();
-                    },
-
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  )
-                )
-              })
-
-            // ignore: invalid_return_type_for_catch_error
-            .catchError((error) => {
-              print('error $error')
-            });
+            firebaseAuthRegister (
+              widget.emailTextController.text.toString(),
+              widget.passwordTextController.text.toString(),
+              context
+            );
           }
 
           if (widget.isLoginSelected) {
-            _auth.signInWithEmailAndPassword (
-              email: widget.emailTextController.text.toString(),
-              password: widget.passwordTextController.text.toString())
-              .then((value) => {
-                Navigator.push (
-                  context,
-                  PageRouteBuilder (
-                    pageBuilder: (context, Animation<double> animation1, Animation<double> animation2) {
-                      return const MainPage();
-                    },
-
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  )
-                )
-              }
+            firebaseAuthLogin (
+              widget.emailTextController.text.toString(),
+              widget.passwordTextController.text.toString(),
+              context
             );
           }
         },
