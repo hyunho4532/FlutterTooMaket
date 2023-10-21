@@ -8,4 +8,4 @@ class AddressFutureDelayed {
       bodyTextVisibleProvider.setIsShowBodyText(true);
     });
   }
-}
+  }
