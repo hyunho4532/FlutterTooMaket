@@ -28,7 +28,6 @@ class BuildRegisterFinishButton extends StatefulWidget {
 }
 
 class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
-  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,6 @@ class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
         outerPadding: const EdgeInsets.all(8.0),
 
         onTap: () {
-
           if (widget.isRegisterSelected) {
             firebaseAuthRegister (
               widget.emailTextController.text.toString(),
@@ -65,6 +63,7 @@ class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
             );
           }
         },
+
         child: Text('완료',
           style: TextStyle(
             color: Theme.of(context).colorScheme.primary,

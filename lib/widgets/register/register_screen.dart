@@ -9,11 +9,10 @@ import 'package:customer_manager/widgets/register/ref/build_register_title_sub_m
 import 'package:customer_manager/widgets/register/ref/form/build_email_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_password_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/listview/build_register_list_view.dart';
+import 'package:customer_manager/widgets/utils/address_future_delayed.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pretty_button/pretty_button.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -60,6 +59,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
 
   AddressProvider addressProvider = AddressProvider();
 
+  AddressFutureDelayed addressFutureDelayed = AddressFutureDelayed();
+
   bool isRegisterSelected = true;
 
   void updateAddressList(List<String> addresses) {
@@ -72,7 +73,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   void initState() {
     super.initState();
 
-    _showBodyTextDelayed();
+    addressFutureDelayed.showBodyText();
+
     _showBodySectionDelayed();
     _showBodyEmailAndPasswordTextDelayed();
     _showBodyNextButtonDelayed();
@@ -272,14 +274,6 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
         ),
       ],
     );
-  }
-
-  void _showBodyTextDelayed() {
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        bodyTextVisibleProvider.setIsShowBodyText(true);
-      });
-    });
   }
 
   void _showBodySectionDelayed() {

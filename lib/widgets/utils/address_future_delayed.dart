@@ -1,14 +1,11 @@
+import 'package:customer_manager/provider/body_text_visible_provider.dart';
 
-/*
+BodyTextVisibleProvider bodyTextVisibleProvider = BodyTextVisibleProvider();
+
 class AddressFutureDelayed {
-
-  void _showBodyTextDelayed(Function(bool) isShowBodyText) {
-
-    bool isShowBodyText = true;
-
+  void showBodyText() {
     Future.delayed(const Duration(seconds: 2), () {
-      isShowBodyText(isShowBodyText);
+      bodyTextVisibleProvider.setIsShowBodyText(true);
     });
   }
 }
-*/
