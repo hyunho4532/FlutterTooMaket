@@ -1,9 +1,9 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:customer_manager/const/bottom_image_item.dart';
-import 'package:customer_manager/widgets/home_screen.dart';
-import 'package:customer_manager/widgets/profile_screen.dart';
-import 'package:customer_manager/widgets/search_screen.dart';
-import 'package:customer_manager/widgets/shopping_screen.dart';
+import 'package:customer_manager/screens/home_screen.dart';
+import 'package:customer_manager/screens/profile_screen.dart';
+import 'package:customer_manager/screens/search_screen.dart';
+import 'package:customer_manager/screens/shopping_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {

@@ -137,7 +137,7 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                       ),
 
                     if (isShowNextButton)
-                      Padding(
+                      Padding (
                         padding: const EdgeInsets.only(top: 24.0, left: 12.0),
                         child: ValueListenableBuilder<bool>(
                           valueListenable: _isEmailValid,

@@ -58,6 +58,9 @@ dependencies:
 
   firebase_core: ^2.19.0
 
+  # 둥근 프로필 사진
+  circular_profile_avatar: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

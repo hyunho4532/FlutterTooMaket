@@ -1,5 +1,5 @@
 import 'package:customer_manager/main.dart';
-import 'package:customer_manager/widgets/home_screen.dart';
+import 'package:customer_manager/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_button/pretty_button.dart';
