@@ -7,9 +7,9 @@ Widget buildFirstFloatButton() {
   return const FloatingActionButton (
     onPressed: null,
     heroTag: "btn2",
-    tooltip: "First Button",
+    tooltip: "물품 등록",
     child: Icon (
-        Icons.add
+        Icons.add_to_home_screen
     ),
   );
 }

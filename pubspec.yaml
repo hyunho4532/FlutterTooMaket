@@ -40,8 +40,6 @@ dependencies:
   pretty_textfield: ^0.0.1
   firebase_auth: ^4.11.1
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
   # Provider 생명 주기
@@ -63,6 +61,9 @@ dependencies:
 
   # FloatingActionBubble
   animated_floating_buttons: ^0.0.2
+
+  # 파이어베이스 데이터베이스 사용
+  firebase_database: ^10.3.1
 
 dev_dependencies:
   flutter_test:
