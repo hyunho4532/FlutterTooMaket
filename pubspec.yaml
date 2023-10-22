@@ -42,8 +42,11 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
-  # Provider 생명 주기
+  # Provider 상태 관리
   provider: ^5.0.0
+
+  # Get 상태 관리
+  get: ^4.3.8
 
   # 텍스트 필드 디자인
   material_text_fields: ^1.0.3
@@ -64,6 +67,9 @@ dependencies:
 
   # 파이어베이스 데이터베이스 사용
   firebase_database: ^10.3.1
+
+  # 파이어베이스 클라우드 스토어 사용
+  cloud_firestore: ^4.11.0
 
 dev_dependencies:
   flutter_test:

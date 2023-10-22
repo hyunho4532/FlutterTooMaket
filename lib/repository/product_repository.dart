@@ -1,17 +1,9 @@
-import 'package:customer_manager/model/Product.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductRepository {
-  final databaseReference = FirebaseDatabase.instance.reference();
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  Future<void> insertProduct(Product product) async {
-    await databaseReference.child('products').push().set({
-      'title': product.title,
-      'price': product.price,
-    });
-
-    Stream<DatabaseEvent> getProducts() {
-      return databaseReference.child('products').onValue;
-    }
+  Future<QuerySnapshot<Map<String, dynamic>>> getProducts() async {
+    return await _fireStore.collection('products').get();
   }
 }

@@ -1,9 +1,9 @@
-import 'dart:convert';
-
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer_manager/model/product.dart';
+import 'package:customer_manager/repository/product_repository.dart';
 import 'package:customer_manager/widgets/floating_button/build_floating_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,7 +12,9 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
+
+  final ProductRepository _productRepository = ProductRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
       floatingActionButton: AnimatedFloatingActionButton (
         fabButtons: [
-          buildFirstFloatButton(),
+          buildFirstFloatButton(context),
           buildSecondFloatButton(),
         ],
 
@@ -30,56 +32,32 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         animatedIconData: AnimatedIcons.menu_close,
       ),
 
-      body: Column (
-        children: [
+      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        future: _productRepository.getProducts(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('에러 났습니다.');
+          }
 
-          ImageSlideshow (
-            width: double.infinity,
-            height: 200,
-            initialPage: 0,
-            indicatorColor: Colors.blue,
-            indicatorBackgroundColor: Colors.grey,
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // 로딩 화면을 표시할 수 있습니다.
+          }
 
-            onPageChanged: (value) {
+          var docs = snapshot.data!.docs;
 
+          return ListView.builder(
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              var product = ProductModel.fromSnapshot(docs[index]);
+              return ListTile(
+                title: Text(product.title),
+                subtitle: Text(product.fullName),
+                trailing: Text(product.address),
+              );
             },
-
-            autoPlayInterval: 3000,
-
-            isLoop: true,
-
-            children: const [
-              Padding (
-                padding: EdgeInsets.all(16.0),
-                child: Column (
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-                    Text (
-                      '환영합니다!',
-                      style: TextStyle (
-                        fontSize: 19.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    Text (
-                      '중고 제품을 판매하기 위해 주소를 입력해주세요!!',
-                      style: TextStyle (
-                        fontSize: 19.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      )
+          );
+        },
+      ),
     );
   }
 }

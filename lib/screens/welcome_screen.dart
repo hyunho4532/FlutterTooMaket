@@ -1,7 +1,9 @@
 import 'package:customer_manager/provider/address_search_provider.dart';
+import 'package:customer_manager/repository/product_repository.dart';
 import 'package:customer_manager/widgets/login/login_screen.dart';
 import 'package:customer_manager/widgets/register/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +25,7 @@ void main() async {
 
   await Firebase.initializeApp (
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ).then((value) => Get.put(ProductRepository()));
 }
 
 class WelcomeScreen extends StatefulWidget {
@@ -36,7 +38,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp (
+    return const GetMaterialApp (
       home: WelcomeDetailScreen()
     );
   }
