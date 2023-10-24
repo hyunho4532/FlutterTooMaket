@@ -12,8 +12,6 @@ import 'package:customer_manager/widgets/register/ref/listview/build_register_li
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pretty_button/pretty_button.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

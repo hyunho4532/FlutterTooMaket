@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
-  final String? id;
   final String fullName;
   final String title;
   final String address;
+  final String currentDate;
 
   ProductModel ({
-    this.id,
     required this.fullName,
     required this.title,
     required this.address,
+    required this.currentDate
   });
 
   toJson() {
@@ -18,6 +18,7 @@ class ProductModel {
       "FullName": fullName,
       "Title": title,
       "Address": address,
+      "CurrentDate": currentDate,
     };
   }
 
@@ -25,10 +26,10 @@ class ProductModel {
     final data = document.data()!;
 
     return ProductModel (
-      id: document.id,
       fullName: data["FullName"],
       title: data["Title"],
       address: data["Address"],
+      currentDate: data["CurrentDate"],
     );
   }
 }

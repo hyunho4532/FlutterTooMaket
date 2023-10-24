@@ -35,12 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: _productRepository.getProducts(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text('에러 났습니다.');
-          }
-
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(); // 로딩 화면을 표시할 수 있습니다.
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('에러 났습니다: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Text('데이터가 없습니다.');
           }
 
           var docs = snapshot.data!.docs;
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           );
         },
-      ),
+      )
     );
   }
 }
