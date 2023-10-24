@@ -71,6 +71,14 @@ dependencies:
   # 파이어베이스 클라우드 스토어 사용
   cloud_firestore: ^4.11.0
 
+  # 갤러리에서 이미지 가져오기
+  image_picker: ^0.8.4+4
+
+  # 드롭다운
+  multi_dropdown: ^2.1.0
+
+  flutter_svg: ^2.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

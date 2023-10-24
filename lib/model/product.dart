@@ -4,13 +4,11 @@ class ProductModel {
   final String fullName;
   final String title;
   final String address;
-  final String currentDate;
 
   ProductModel ({
     required this.fullName,
     required this.title,
     required this.address,
-    required this.currentDate
   });
 
   toJson() {
@@ -18,7 +16,6 @@ class ProductModel {
       "FullName": fullName,
       "Title": title,
       "Address": address,
-      "CurrentDate": currentDate,
     };
   }
 
@@ -29,7 +26,6 @@ class ProductModel {
       fullName: data["FullName"],
       title: data["Title"],
       address: data["Address"],
-      currentDate: data["CurrentDate"],
     );
   }
 }
