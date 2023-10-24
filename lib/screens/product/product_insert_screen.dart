@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer_manager/repository/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -15,9 +17,11 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final picker = ImagePicker();
   PickedFile? _image;
 
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _priceController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+
+  final ProductRepository _productRepository = ProductRepository();
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -39,19 +43,25 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             color: Colors.black,
           ),
         ),
-        actions: const [
+        actions: [
           Column (
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
 
             children: [
-              Padding (
-                padding: EdgeInsets.only(right: 8.0),
-                child: Text (
-                  '확인',
-                  style: TextStyle (
-                    fontSize: 18.0,
-                    color: Colors.black,
+              GestureDetector (
+                onTap: () {
+                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text);
+                },
+
+                child: const Padding (
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Text (
+                    '확인',
+                    style: TextStyle (
+                      fontSize: 18.0,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),

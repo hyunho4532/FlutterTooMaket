@@ -32,32 +32,40 @@ class _HomeScreenState extends State<HomeScreen> {
         animatedIconData: AnimatedIcons.menu_close,
       ),
 
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        future: _productRepository.getProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('에러 났습니다: ${snapshot.error}');
-          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Text('데이터가 없습니다.');
-          }
+      body: Column(
+        children: [
+          FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            future: _productRepository.getProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text('에러 났습니다: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Text('데이터가 없습니다.');
+              }
 
-          var docs = snapshot.data!.docs;
+              var docs = snapshot.data!.docs;
 
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              var product = ProductModel.fromSnapshot(docs[index]);
-              return ListTile(
-                title: Text(product.title),
-                subtitle: Text(product.fullName),
-                trailing: Text(product.address),
+              return Expanded (
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    var product = ProductModel.fromSnapshot(docs[index]);
+
+                    return ListTile (
+                      title: Text(product.title),
+                      subtitle: Text(product.price),
+                    );
+                  },
+                ),
               );
             },
-          );
-        },
-      )
+          ),
+        ],
+      ),
     );
   }
 }
