@@ -49,8 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               var products = snapshot.data!.docs;
 
               return Expanded (
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
+                  child: ListView.builder (
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       var product = ProductModel.fromSnapshot(products[index]);
@@ -60,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Row (
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
                           children: [
                             imageUrl != null
                                 ? SizedBox(
@@ -74,22 +75,60 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                                 : Container(
                               width: 100,
-                              height: 120,
+                              height: 100,
                               color: Colors.grey,
                             ),
-                            const SizedBox(width: 10),
+
+                            const SizedBox(width: 16),
+
                             Column (
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
+
                               children: [
-                                Text (
-                                  product.title,
-                                  style: const TextStyle (
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0
+                                Padding (
+                                  padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
+                                  child: Text (
+                                    product.title,
+                                    style: const TextStyle (
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0
+                                    ),
                                   ),
+                                ),
+
+                                Text (
+                                  product.address,
+                                  style: const TextStyle (
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+
+                                Row (
+                                  children: [
+                                    Padding (
+                                      padding: const EdgeInsets.only(top: 30.0),
+                                      child: Text (
+                                        '${product.price} 원 ',
+                                        style: const TextStyle (
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ),
+
+                                    Padding (
+                                      padding: const EdgeInsets.only(top: 30.0, left: 80),
+                                      child: product.isChecked == true ? const Text (
+                                        '가격 제안 O'
+                                      ) : const Text (
+                                        '가격 제안 X'
+                                      )
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
+
                           ],
                         ),
                       );

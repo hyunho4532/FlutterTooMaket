@@ -7,12 +7,13 @@ class ProductRepository {
     return await _fireStore.collection('products').get();
   }
 
-  Future<void> insertProducts(String title, String price, String address, String imageUrl) async {
+  Future<void> insertProducts(String title, String price, String address, String imageUrl, bool isChecked) async {
     await _fireStore.collection('products').add ({
       'title': title,
       'price': price,
       'address': address,
       'imageUrl': imageUrl,
+      'isChecked': isChecked,
     });
   }
 }

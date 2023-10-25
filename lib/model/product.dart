@@ -5,12 +5,14 @@ class ProductModel {
   final String price;
   final String address;
   final String? imageUrl;
+  final bool? isChecked;
 
   ProductModel ({
     required this.title,
     required this.price,
     required this.address,
     this.imageUrl,
+    this.isChecked,
   });
 
   toJson() {
@@ -19,6 +21,7 @@ class ProductModel {
       "price": price,
       "address": address,
       "imageUrl": imageUrl,
+      "isChecked": isChecked,
     };
   }
 
@@ -30,6 +33,7 @@ class ProductModel {
       price: data["price"] ?? "",
       address: data["address"] ?? "",
       imageUrl: data["imageUrl"],
+      isChecked: data["isChecked"],
     );
   }
 }

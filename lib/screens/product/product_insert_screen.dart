@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:roundcheckbox/roundcheckbox.dart';
 
 class ProductInsertScreen extends StatefulWidget {
   const ProductInsertScreen({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   PickedFile? _image;
 
   String? _imageUrl;
+
+  bool? isChecked = false;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -68,7 +71,7 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             children: [
               GestureDetector (
                 onTap: () {
-                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _imageUrl!);
+                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _imageUrl!, isChecked!);
                 },
 
                 child: const Padding (
@@ -145,8 +148,33 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
               ),
             ),
 
+            Row (
+              children: [
+                const Padding (
+                    padding: EdgeInsets.only(left: 24.0, top: 36.0, right: 24.0),
+                    child: Text (
+                        '다른 사람들에게 가격 제안을 받아볼게요!'
+                    )
+                ),
+
+                Padding (
+                    padding: const EdgeInsets.only(left: 24.0, top: 50.0, right: 24.0),
+                    child: SizedBox (
+                      width: 30,
+                      height: 30,
+
+                      child: RoundCheckBox (
+                        onTap: (selected) {
+                          isChecked = selected;
+                        },
+                      ),
+                    )
+                ),
+              ],
+            ),
+
             Padding (
-              padding: const EdgeInsets.only(left: 24.0, top: 24.0, right: 24.0, bottom: 36.0),
+              padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
               child: TextFormField (
                 controller: _addressController,
                 decoration: const InputDecoration (
