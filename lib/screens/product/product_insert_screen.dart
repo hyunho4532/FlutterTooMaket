@@ -27,7 +27,7 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final ProductRepository _productRepository = ProductRepository();
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
