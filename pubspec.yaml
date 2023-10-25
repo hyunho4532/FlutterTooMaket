@@ -77,6 +77,8 @@ dependencies:
   # 드롭다운
   multi_dropdown: ^2.1.0
 
+  firebase_storage: ^11.4.0
+
   flutter_svg: ^2.0.7
 
 dev_dependencies:

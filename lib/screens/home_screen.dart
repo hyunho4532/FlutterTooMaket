@@ -45,19 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Text('데이터가 없습니다.');
               }
 
-              var docs = snapshot.data!.docs;
+              var products = snapshot.data!.docs;
 
               return Expanded (
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   
-                  itemCount: docs.length,
+                  itemCount: products.length,
                   itemBuilder: (context, index) {
-                    var product = ProductModel.fromSnapshot(docs[index]);
+                    var product = ProductModel.fromSnapshot(products[index]);
+                    var formattedProduct = products[index];
+                    var imageUrl = formattedProduct['imageUrl'];
 
                     return ListTile (
                       title: Text(product.title),
-                      subtitle: Text(product.price),
+                      subtitle: imageUrl != null
+                          ? Image.network(
+                          imageUrl,
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      )
+                          : Container(),
                     );
                   },
                 ),

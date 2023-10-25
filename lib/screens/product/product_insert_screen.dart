@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/repository/product_repository.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -17,6 +18,8 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final picker = ImagePicker();
   PickedFile? _image;
 
+  String? _imageUrl;
+
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -25,6 +28,20 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      Reference ref = FirebaseStorage.instance.ref().child('images/').child(DateTime.now.toString());
+      UploadTask uploadTask = ref.putFile(imageFile);
+
+      await uploadTask.whenComplete(() async {
+        _imageUrl = await ref.getDownloadURL();
+      });
+
+      setState(() {
+
+      });
+    }
 
     setState(() {
       _image = pickedFile;
@@ -51,7 +68,7 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             children: [
               GestureDetector (
                 onTap: () {
-                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text);
+                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _imageUrl!);
                 },
 
                 child: const Padding (
