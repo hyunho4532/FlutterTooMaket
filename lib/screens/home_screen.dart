@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/model/product.dart';
 import 'package:customer_manager/repository/product_repository.dart';
+import 'package:customer_manager/screens/product/product_detail_screen.dart';
 import 'package:customer_manager/widgets/floating_button/build_floating_button.dart';
 import 'package:flutter/material.dart';
 
@@ -56,80 +57,88 @@ class _HomeScreenState extends State<HomeScreen> {
                       var formattedProduct = products[index];
                       var imageUrl = formattedProduct['imageUrl'];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row (
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      return GestureDetector (
+                        onTap: () {
+                          Navigator.of(context).push (
+                            MaterialPageRoute(builder: (_) => ProductDetailScreen(imageUrl: imageUrl, title: product.title))
+                          );
+                        },
 
-                          children: [
-                            imageUrl != null
-                                ? SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: CachedNetworkImage (
-                                imageUrl: '$imageUrl',
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row (
+                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                            children: [
+                              imageUrl != null
+                                  ? SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: CachedNetworkImage (
+                                  imageUrl: '$imageUrl',
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                ),
+                              )
+                                  : Container(
+                                width: 100,
+                                height: 100,
+                                color: Colors.grey,
                               ),
-                            )
-                                : Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.grey,
-                            ),
 
-                            const SizedBox(width: 16),
+                              const SizedBox(width: 16),
 
-                            Column (
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              Column (
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
 
-                              children: [
-                                Padding (
-                                  padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
-                                  child: Text (
-                                    product.title,
-                                    style: const TextStyle (
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0
-                                    ),
-                                  ),
-                                ),
-
-                                Text (
-                                  product.address,
-                                  style: const TextStyle (
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-
-                                Row (
-                                  children: [
-                                    Padding (
-                                      padding: const EdgeInsets.only(top: 30.0),
-                                      child: Text (
-                                        '${product.price} 원 ',
-                                        style: const TextStyle (
-                                          fontSize: 14.0,
-                                        ),
+                                children: [
+                                  Padding (
+                                    padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
+                                    child: Text (
+                                      product.title,
+                                      style: const TextStyle (
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0
                                       ),
                                     ),
+                                  ),
 
-                                    Padding (
-                                      padding: const EdgeInsets.only(top: 30.0, left: 80),
-                                      child: product.isChecked == true ? const Text (
-                                        '가격 제안 O'
-                                      ) : const Text (
-                                        '가격 제안 X'
-                                      )
+                                  Text (
+                                    product.address,
+                                    style: const TextStyle (
+                                      fontSize: 14.0,
                                     ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                  ),
 
-                          ],
+                                  Row (
+                                    children: [
+                                      Padding (
+                                        padding: const EdgeInsets.only(top: 30.0),
+                                        child: Text (
+                                          '${product.price} 원 ',
+                                          style: const TextStyle (
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+
+                                      Padding (
+                                        padding: const EdgeInsets.only(top: 30.0, left: 80),
+                                        child: product.isChecked == true ? const Text (
+                                          '가격 제안 O'
+                                        ) : const Text (
+                                          '가격 제안 X'
+                                        )
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+
+                            ],
+                          ),
                         ),
                       );
                     },

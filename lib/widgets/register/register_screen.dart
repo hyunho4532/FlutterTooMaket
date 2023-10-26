@@ -8,10 +8,11 @@ import 'package:customer_manager/widgets/register/ref/build_register_title_secti
 import 'package:customer_manager/widgets/register/ref/build_register_title_sub_main.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_email_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_password_text_form_field.dart';
-import 'package:customer_manager/widgets/register/ref/listview/build_register_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pretty_button/pretty_button.dart';
+
+import 'ref/listview/build_register_listview.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
