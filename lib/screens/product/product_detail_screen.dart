@@ -6,8 +6,10 @@ class ProductDetailScreen extends StatefulWidget {
   var imageUrl = "";
 
   String title = "";
+  String userAddress = "";
+  String nickname = "";
 
-  ProductDetailScreen({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+  ProductDetailScreen({Key? key, required this.imageUrl, required this.title, required this.userAddress, required this.nickname}) : super(key: key);
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -57,13 +59,71 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
           ),
 
+          Column (
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+
+              Row (
+                children: [
+                  Padding (
+                    padding: const EdgeInsets.only(top: 12.0, left: 12.0),
+                    child: Image.asset (
+                      'assets/image/user.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+
+                  Column (
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      Padding (
+                        padding: const EdgeInsets.only(left: 16.0, top: 16.0),
+                        child: Text (
+                          widget.nickname,
+                          style: const TextStyle (
+                            color: Colors.black87,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                      Padding (
+                        padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+                        child: Text (
+                          widget.userAddress,
+                          style: const TextStyle (
+                            color: Colors.black87,
+                            fontSize: 14.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+
+          const Padding (
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Divider (
+                color: Colors.black
+            ),
+          ),
+
           Padding (
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: const EdgeInsets.only(left: 16.0, top: 32.0),
             child: Text (
               '제목: ${widget.title}',
               style: const TextStyle (
                 color: Colors.black87,
-                fontSize: 22.0,
+                fontSize: 18.0,
               ),
             ),
           ),

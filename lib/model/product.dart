@@ -4,6 +4,8 @@ class ProductModel {
   final String title;
   final String price;
   final String address;
+  final String userAddress;
+  final String nickname;
   final String? imageUrl;
   final bool? isChecked;
 
@@ -11,6 +13,8 @@ class ProductModel {
     required this.title,
     required this.price,
     required this.address,
+    required this.userAddress,
+    required this.nickname,
     this.imageUrl,
     this.isChecked,
   });
@@ -20,6 +24,8 @@ class ProductModel {
       "title": title,
       "price": price,
       "address": address,
+      "userAddress": userAddress,
+      "nickname": nickname,
       "imageUrl": imageUrl,
       "isChecked": isChecked,
     };
@@ -32,6 +38,8 @@ class ProductModel {
       title: data["title"] ?? "",
       price: data["price"] ?? "",
       address: data["address"] ?? "",
+      userAddress: data["userAddress"] ?? "",
+      nickname: data["nickname"] ?? "",
       imageUrl: data["imageUrl"],
       isChecked: data["isChecked"],
     );

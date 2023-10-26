@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return GestureDetector (
                         onTap: () {
                           Navigator.of(context).push (
-                            MaterialPageRoute(builder: (_) => ProductDetailScreen(imageUrl: imageUrl, title: product.title))
+                            MaterialPageRoute(builder: (_) => ProductDetailScreen(imageUrl: imageUrl, title: product.title, nickname: product.nickname, userAddress: product.userAddress,))
                           );
                         },
 
@@ -125,18 +125,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
 
                                       Padding (
-                                        padding: const EdgeInsets.only(top: 30.0, left: 80),
-                                        child: product.isChecked == true ? const Text (
-                                          '가격 제안 O'
-                                        ) : const Text (
-                                          '가격 제안 X'
-                                        )
+                                          padding: const EdgeInsets.only(top: 30.0, left: 80),
+                                          child: product.isChecked == true ? const Text (
+                                              '가격 제안 O'
+                                          ) : const Text (
+                                              '가격 제안 X'
+                                          )
                                       ),
                                     ],
-                                  )
+                                  ),
+
+                                  Opacity (
+                                    opacity: 0.0,
+
+                                    child: Text (
+                                      product.userAddress,
+                                      style: const TextStyle (
+                                        fontSize: 14.0,
+                                      ),
+                                    ),
+                                  ),
+
+                                  Opacity (
+                                    opacity: 0.0,
+
+                                    child: Text (
+                                      product.nickname,
+                                      style: const TextStyle (
+                                        fontSize: 14.0,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-
                             ],
                           ),
                         ),

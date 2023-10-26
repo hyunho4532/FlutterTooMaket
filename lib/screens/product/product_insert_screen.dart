@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +26,8 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   bool? isChecked = false;
 
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _userAddressController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
@@ -57,15 +60,20 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   @override
   void initState() {
     super.initState();
-    getUserEmail();
+    getUserName();
   }
 
-  void getUserEmail() async {
-    User? user = auth.currentUser;
+  void getUserName() async {
+    final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
-    if (user != null) {
-      String email = user.email ?? "";
-      _emailController.text = email;
+    DocumentSnapshot document = await fireStore.collection('users').doc(auth.currentUser!.uid).get();
+
+    if (document.exists) {
+      var userData = document.data() as Map<String, dynamic>;
+      var nickname = userData['nickname'];
+      var address = userData['address'];
+      _nicknameController.text = nickname;
+      _userAddressController.text = address;
     }
   }
 
@@ -89,7 +97,7 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             children: [
               GestureDetector (
                 onTap: () {
-                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _imageUrl!, isChecked!);
+                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _userAddressController.text, _nicknameController.text, _imageUrl!, isChecked!);
                 },
 
                 child: const Padding (
@@ -153,17 +161,6 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
                 decoration: const InputDecoration (
                   hintText: '제목을 입력해주세요.',
                 ),
-              ),
-            ),
-
-            Padding (
-              padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
-              child: TextFormField (
-                controller: _titleController,
-                decoration: const InputDecoration (
-                  hintText: '이메일을 입력해주세요.',
-                ),
-
               ),
             ),
 
@@ -254,6 +251,34 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
 
                   selectedOptionIcon: const Icon(Icons.check_circle),
                 )
+            ),
+
+            Padding (
+              padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
+              child: Opacity (
+                opacity: 0.0,
+
+                child: TextFormField (
+                  controller: _nicknameController,
+                  decoration: const InputDecoration (
+                    hintText: '이름을 입력해주세요.',
+                  ),
+
+                ),
+              ),
+            ),
+
+            Padding (
+              padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
+              child: Opacity(
+                opacity: 0.0, // 0.0으로 설정하여 숨김
+                child: TextFormField (
+                  controller: _userAddressController,
+                  decoration: const InputDecoration (
+                    hintText: '주소를 입력해주세요.',
+                  ),
+                ),
+              ),
             ),
           ],
         ),
