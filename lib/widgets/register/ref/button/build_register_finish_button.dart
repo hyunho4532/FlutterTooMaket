@@ -1,6 +1,6 @@
-import 'package:customer_manager/main.dart';
 import 'package:customer_manager/services/auth/firebaseAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_button/pretty_button.dart';
 
@@ -11,6 +11,8 @@ class BuildRegisterFinishButton extends StatefulWidget {
 
   TextEditingController emailTextController;
   TextEditingController passwordTextController;
+  String addressValues = "";
+  TextEditingController nicknameTextController;
 
   bool isRegisterSelected = false;
   bool isLoginSelected = false;
@@ -19,6 +21,8 @@ class BuildRegisterFinishButton extends StatefulWidget {
     Key? key,
     required this.emailTextController,
     required this.passwordTextController,
+    required this.addressValues,
+    required this.nicknameTextController,
     required this.isRegisterSelected,
     required this.isLoginSelected,
   }) : super(key: key);
@@ -28,7 +32,6 @@ class BuildRegisterFinishButton extends StatefulWidget {
 }
 
 class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
-  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +53,13 @@ class _BuildRegisterFinishButtonState extends State<BuildRegisterFinishButton> {
         onTap: () {
 
           if (widget.isRegisterSelected) {
+            print(widget.nicknameTextController.text.toString());
+
             firebaseAuthRegister (
               widget.emailTextController.text.toString(),
               widget.passwordTextController.text.toString(),
+              widget.addressValues,
+              widget.nicknameTextController.text.toString(),
               context
             );
           }

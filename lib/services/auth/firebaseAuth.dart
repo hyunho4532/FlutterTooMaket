@@ -1,3 +1,5 @@
+import 'package:customer_manager/repository/product_repository.dart';
+import 'package:customer_manager/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -24,11 +26,15 @@ void firebaseAuthLogin(email, password, context) {
   });
 }
 
-void firebaseAuthRegister(email, password, context) {
+void firebaseAuthRegister(email, password, address, nickname, context) {
   auth.createUserWithEmailAndPassword (
     email: email,
     password: password,
   ).then((value) {
+
+    UserRepository userRepository = UserRepository();
+    userRepository.insertUsers(address, nickname, auth.currentUser!.uid.toString());
+
     Navigator.push (
       context,
       PageRouteBuilder (

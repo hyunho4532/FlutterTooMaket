@@ -1,5 +1,6 @@
 import 'package:customer_manager/provider/address_search_provider.dart';
 import 'package:customer_manager/provider/body_text_visible_provider.dart';
+import 'package:customer_manager/services/auth/firebaseAuth.dart';
 import 'package:customer_manager/services/kakao_address_service.dart';
 import 'package:customer_manager/widgets/register/ref/button/build_register_finish_button.dart';
 import 'package:customer_manager/widgets/register/ref/button/build_register_prev_button.dart';
@@ -8,6 +9,7 @@ import 'package:customer_manager/widgets/register/ref/build_register_title_secti
 import 'package:customer_manager/widgets/register/ref/build_register_title_sub_main.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_email_text_form_field.dart';
 import 'package:customer_manager/widgets/register/ref/form/build_password_text_form_field.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pretty_button/pretty_button.dart';
@@ -43,6 +45,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   final PageController _pageController = PageController(initialPage: 0);
   late TextEditingController _emailTextController = TextEditingController();
   late TextEditingController _passwordTextController = TextEditingController();
+  late TextEditingController _addressTextController = TextEditingController();
+  late TextEditingController _nicknameTextController = TextEditingController();
   final ValueNotifier<bool> _isEmailValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> _isPasswordValid = ValueNotifier<bool>(false);
 
@@ -60,6 +64,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
   AddressProvider addressProvider = AddressProvider();
 
   bool isRegisterSelected = true;
+
+  DatabaseReference ref = FirebaseDatabase.instance.ref("users").child(auth.currentUser!.uid.toString());
 
   void updateAddressList(List<String> addresses) {
     setState(() {
@@ -216,7 +222,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
               child: Padding (
                 padding: const EdgeInsets.all(24.0),
                 child: Form (
-                  child: TextFormField(
+                  child: TextFormField (
+                    controller: _addressTextController,
                     decoration: const InputDecoration(
                       hintText: '주소를 입력해주세요',
                       hintStyle: TextStyle(
@@ -244,13 +251,35 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
             ),
 
             Padding (
-              padding: const EdgeInsets.only(top: 48.0, left: 16.0),
+              padding: const EdgeInsets.only(top: 48.0, left: 24.0),
               child: Text (
                 '주소: $addressValues',
                 style: const TextStyle (
                   color: Colors.black,
                   fontSize: 18.0,
                   fontFamily: 'DNF_KR',
+                ),
+              ),
+            ),
+
+            SingleChildScrollView (
+              child: Padding (
+                padding: const EdgeInsets.only(top: 64.0, left: 24.0),
+                child: Form (
+                  child: TextFormField (
+                    controller: _nicknameTextController,
+                    decoration: const InputDecoration(
+                        hintText: '이름을 입력해주세요',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: InputBorder.none
+                    ),
+
+                    onChanged: (value) {
+                      addressService.fetchAddresses(value, updateAddressList);
+                    },
+                  ),
                 ),
               ),
             ),
@@ -262,6 +291,8 @@ class _PageViewRegisterWidgetState extends State<PageViewRegisterWidget> {
                 BuildRegisterFinishButton (
                   emailTextController: _emailTextController,
                   passwordTextController: _passwordTextController,
+                  addressValues: addressValues,
+                  nicknameTextController: _nicknameTextController,
                   isRegisterSelected: isRegisterSelected,
                   isLoginSelected: false,
                 ),

@@ -39,6 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
           BuildRegisterFinishButton (
             emailTextController: _emailTextController,
             passwordTextController: _passwordTextController,
+            addressValues: "",
+            nicknameTextController: _emailTextController,
             isRegisterSelected: false,
             isLoginSelected: isLoginSelected,
           ),

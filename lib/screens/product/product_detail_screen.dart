@@ -17,28 +17,71 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold (
-      body: Column (
-        children: [
-          Padding (
-            padding: const EdgeInsets.all(20.0),
-            child: SizedBox (
-              width: MediaQuery.of(context).size.width,
-              height: 70,
+      appBar: AppBar (
+        title: const Text (
+          '중고 물품 등록하기',
+          style: TextStyle (
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white,
 
-              child: CachedNetworkImage (
-                imageUrl: widget.imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+        leading: GestureDetector (
+
+          onTap: () {
+            Navigator.pop(context);
+          },
+
+          child: const Icon (
+              Icons.arrow_back,
+              color: Colors.black
+          ),
+        ),
+      ),
+      body: Column (
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: [
+          SizedBox (
+            width: MediaQuery.of(context).size.width,
+            height: 300,
+
+            child: CachedNetworkImage (
+              imageUrl: widget.imageUrl,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+          ),
+
+          Padding (
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text (
+              '제목: ${widget.title}',
+              style: const TextStyle (
+                color: Colors.black87,
+                fontSize: 22.0,
               ),
             ),
           ),
 
-          Text (
-            widget.title,
-            style: const TextStyle (
-              color: Colors.black,
-              fontSize: 16.0,
+          GestureDetector (
+            onTap: () {
+
+            },
+
+            child: const Padding (
+              padding: EdgeInsets.only(top: 36.0, left: 16.0),
+              child: Text (
+                '신고하기',
+                style: TextStyle (
+                  color: Colors.redAccent,
+                  fontSize: 16.0,
+                ),
+              ),
             ),
           ),
         ],

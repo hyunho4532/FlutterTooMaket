@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/repository/product_repository.dart';
-import 'package:customer_manager/widgets/product/ref/build_product_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,8 +24,11 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   bool? isChecked = false;
 
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+
+  final auth = FirebaseAuth.instance;
 
   final ProductRepository _productRepository = ProductRepository();
 
@@ -50,6 +52,21 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
     setState(() {
       _image = pickedFile;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserEmail();
+  }
+
+  void getUserEmail() async {
+    User? user = auth.currentUser;
+
+    if (user != null) {
+      String email = user.email ?? "";
+      _emailController.text = email;
+    }
   }
 
   @override
@@ -136,6 +153,17 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
                 decoration: const InputDecoration (
                   hintText: '제목을 입력해주세요.',
                 ),
+              ),
+            ),
+
+            Padding (
+              padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
+              child: TextFormField (
+                controller: _titleController,
+                decoration: const InputDecoration (
+                  hintText: '이메일을 입력해주세요.',
+                ),
+
               ),
             ),
 
