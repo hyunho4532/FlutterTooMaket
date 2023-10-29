@@ -14,7 +14,7 @@ class ProductRepository {
   }
   
   Future<void> insertProducts(String title, String price, String address, String userAddress, String nickname, String imageUrl, bool isChecked) async {
-    await _fireStore.collection('products').add ({
+    await _fireStore.collection('products').doc(auth.currentUser!.uid.toString()).set({
       'title': title,
       'price': price,
       'address': address,
@@ -23,5 +23,13 @@ class ProductRepository {
       'imageUrl': imageUrl,
       'isChecked': isChecked,
     });
+  }
+
+  Future<int> getUserProductCount() async {
+    var querySnapshot = await _fireStore
+        .collection('products')
+        .get();
+
+    return querySnapshot.docs.length;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:customer_manager/widgets/profile/build_circular_avatar.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late String userName = '';
   late int userScore = 0;
+  late int userProductCount = 0;
 
   ProductRepository productRepository = ProductRepository();
 
@@ -26,6 +28,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           userName = data?['nickname'];
         });
+    });
+
+    productRepository.getUserProductCount().then((count) {
+      setState(() {
+        userProductCount = count;
+      });
     });
   }
 
@@ -99,12 +107,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               )
                           )
                         ],
-                      )
+                      ),
                     ],
                   ),
                 )
               ],
-            )
+            ),
+
+            const Padding (
+              padding: EdgeInsets.only(left: 24.0, top: 56.0),
+              child: Text (
+                '내 상품 내역',
+                style: TextStyle (
+                  fontSize: 20.0,
+
+                ),
+              ),
+            ),
+
+            Padding (
+              padding: const EdgeInsets.only(left: 16.0, top: 12.0),
+              child: Card (
+                shape: RoundedRectangleBorder (
+                  borderRadius: BorderRadius.circular(20.0)
+                ),
+                child: SizedBox (
+                  width: 100,
+                  height: 80,
+
+                  child: Text (
+                    '$userProductCount'
+                  )
+                ),
+              ),
+            ),
           ],
         ),
       ),

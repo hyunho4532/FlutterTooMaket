@@ -113,6 +113,7 @@ flutter:
     - assets/image/user.png
     - assets/image/smiling-face.png
     - assets/image/angry-face.png
+    - assets/image/product.png
     - assets/lottie/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
