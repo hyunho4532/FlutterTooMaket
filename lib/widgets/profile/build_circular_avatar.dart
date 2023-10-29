@@ -12,7 +12,7 @@ class _CircularAvatarState extends State<BuildCircularAvatar> {
   @override
   Widget build(BuildContext context) {
     return Padding (
-      padding: const EdgeInsets.only(top: 32.0, left: 20),
+      padding: const EdgeInsets.only(top: 48.0, left: 20),
       child: SizedBox (
         width: 70,
         height: 70,

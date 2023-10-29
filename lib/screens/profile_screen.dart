@@ -11,6 +11,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late String userName = '';
+  late int userScore = 0;
 
   ProductRepository productRepository = ProductRepository();
 
@@ -42,10 +43,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 const BuildCircularAvatar(),
 
-                Text (
-                  userName,
-                  style: const TextStyle (
-                    color: Colors.black87,
+                Expanded (
+                  child: Column (
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      Padding (
+                        padding: const EdgeInsets.only(top: 52.0, left: 16.0),
+                        child: Text (
+                          '$userName님 환영해요!',
+                          style: const TextStyle (
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0
+                          ),
+                        ),
+                      ),
+
+                      const Padding (
+                        padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Divider (
+                          color: Colors.black,
+                        ),
+                      ),
+
+                      Row (
+                        children: [
+                          const Padding (
+                              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                              child: Text (
+                                '현재 당신의 어필 점수는? 0점',
+                                style: TextStyle (
+                                  fontSize: 14.0,
+                                  color: Colors.black87,
+                                ),
+                              )
+                          ),
+
+                          userScore >= 0
+                            ? Padding (
+                                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                                child: Image.asset (
+                                  'assets/image/smiling-face.png',
+                                  width: 30,
+                                  height: 30,
+                                )
+                            )
+                              : Padding (
+                              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                              child: Image.asset (
+                                'assets/image/angry-face.png',
+                                width: 30,
+                                height: 30,
+                              )
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 )
               ],
