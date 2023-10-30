@@ -12,9 +12,10 @@ class ProductRepository {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
     return await _fireStore.collection('users').doc(auth.currentUser!.uid.toString()).get();
   }
-  
+
   Future<void> insertProducts(String title, String price, String address, String userAddress, String nickname, String imageUrl, int favoriteCount, bool isChecked) async {
-    await _fireStore.collection('products').doc(auth.currentUser!.uid.toString()).set({
+    await _fireStore.collection('products').add({
+      'auth': auth.currentUser!.uid.toString(),
       'title': title,
       'price': price,
       'address': address,

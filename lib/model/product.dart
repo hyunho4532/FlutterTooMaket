@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
+  final String authUid;
   final String title;
   final String price;
   final String address;
@@ -11,6 +12,7 @@ class ProductModel {
   final bool? isChecked;
 
   ProductModel ({
+    required this.authUid,
     required this.title,
     required this.price,
     required this.address,
@@ -23,6 +25,7 @@ class ProductModel {
 
   toJson() {
     return {
+      "authUid": authUid,
       "title": title,
       "price": price,
       "address": address,
@@ -38,6 +41,7 @@ class ProductModel {
     final data = document.data()!;
 
     return ProductModel (
+      authUid: data["authUid"] ?? "",
       title: data["title"] ?? "",
       price: data["price"] ?? "",
       address: data["address"] ?? "",
