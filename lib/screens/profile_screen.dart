@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/model/product.dart';
 import 'package:customer_manager/repository/product_repository.dart';
-import 'package:customer_manager/services/auth/firebaseAuth.dart';
 import 'package:customer_manager/widgets/profile/build_circular_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -127,65 +126,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              future: productRepository.getProducts(),
+              future: productRepository.getUserProducts(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                var productData = snapshot.data;
+                var productDocs = snapshot.data?.docs;
 
-                if (productData == null || productData.docs.isEmpty) {
-                  return const Text (
-                      '이런 상품을 등록하지 않았군요.'
+                if (productDocs == null || productDocs.isEmpty) {
+                  return const Text(
+                    '이런 상품을 등록하지 않았군요.',
                   );
                 }
 
-                var authFieldValue = productData.docs[2].data()['auth'];
-                print(authFieldValue);
-
-                var userUID = auth.currentUser!.uid.toString();
-                print(userUID);
-
-                if (authFieldValue == userUID) {
-                  var product = ProductModel.fromSnapshot(productData.docs[0]);
+                var productWidgets = productDocs.map((productDoc) {
+                  var product = ProductModel.fromSnapshot(productDoc);
                   var imageUrl = product.imageUrl;
 
-                  return Expanded (
-                    child: Padding (
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: SizedBox (
-                        width: 120,
-                        height: 120,
-                        child: ListView (
-                          children: [
-                            Card (
-                              shape: RoundedRectangleBorder (
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Column (
-                                children: [
-                                  CachedNetworkImage (
-                                    width: 120,
-                                    height: 120,
-                                    imageUrl: '$imageUrl',
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                  return SizedBox(
+                    width: 120,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        children: [
+                          CachedNetworkImage(
+                            width: 120,
+                            height: 120,
+                            imageUrl: imageUrl.toString(),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                          ),
+                        ],
                       ),
                     ),
                   );
-                } else {
-                  // 조건을 만족하지 않는 경우에 대한 처리
-                  return SizedBox.shrink(); // 빈 위젯 반환 혹은 다른 처리
-                }
+                }).toList();
+
+                return Expanded (
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24.0),
+                    child: ListView (
+                      scrollDirection: Axis.horizontal,
+                      children: productWidgets,
+                    ),
+                  ),
+                );
               },
+            ),
+
+            const Padding (
+              padding: EdgeInsets.only(left: 24.0, top: 56.0),
+              child: Text (
+                '내 상품 내역',
+                style: TextStyle (
+                  fontSize: 20.0,
+
+                ),
+              ),
             ),
           ],
         ),

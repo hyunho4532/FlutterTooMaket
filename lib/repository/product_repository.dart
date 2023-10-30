@@ -8,6 +8,11 @@ class ProductRepository {
   Future<QuerySnapshot<Map<String, dynamic>>> getProducts() async {
     return await _fireStore.collection('products').get();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserProducts() async {
+    var userUID = auth.currentUser!.uid.toString();
+    return await _fireStore.collection('products').where('auth', isEqualTo: userUID).get();
+  }
   
   Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
     return await _fireStore.collection('users').doc(auth.currentUser!.uid.toString()).get();
