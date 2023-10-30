@@ -144,51 +144,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   var product = ProductModel.fromSnapshot(productDoc);
                   var imageUrl = product.imageUrl;
 
-                  return SizedBox(
-                    width: 120,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Column(
-                        children: [
-                          CachedNetworkImage(
-                            width: 120,
-                            height: 120,
-                            imageUrl: imageUrl.toString(),
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                          ),
-                        ],
-                      ),
+                  return Padding (
+                    padding: const EdgeInsets.only(top: 16.0, left: 24.0),
+                    child: Row (
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        CachedNetworkImage(
+                          width: 120,
+                          height: 120,
+                          imageUrl: imageUrl.toString(),
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                        ),
+                      ],
                     ),
                   );
                 }).toList();
 
                 return Expanded (
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
+                  child: SizedBox (
+                    width: MediaQuery.of(context).size.width,
+                    height: 10,
                     child: ListView (
                       scrollDirection: Axis.horizontal,
+
                       children: productWidgets,
                     ),
                   ),
                 );
               },
-            ),
-
-            const Padding (
-              padding: EdgeInsets.only(left: 24.0, top: 56.0),
-              child: Text (
-                '내 상품 내역',
-                style: TextStyle (
-                  fontSize: 20.0,
-
-                ),
-              ),
             ),
           ],
         ),
