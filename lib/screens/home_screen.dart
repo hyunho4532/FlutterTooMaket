@@ -72,8 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               imageUrl != null
                                   ? SizedBox(
-                                width: 100,
-                                height: 100,
+                                width: 110,
+                                height: 110,
                                 child: CachedNetworkImage (
                                   imageUrl: '$imageUrl',
                                   fit: BoxFit.cover,
@@ -82,8 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               )
                                   : Container(
-                                width: 100,
-                                height: 100,
+                                width: 150,
+                                height: 150,
                                 color: Colors.grey,
                               ),
 
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       product.title,
                                       style: const TextStyle (
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18.0
+                                        fontSize: 16.0
                                       ),
                                     ),
                                   ),
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Row (
                                     children: [
                                       Padding (
-                                        padding: const EdgeInsets.only(top: 30.0),
+                                        padding: const EdgeInsets.only(top: 16.0),
                                         child: Text (
                                           '${product.price} 원 ',
                                           style: const TextStyle (
@@ -125,11 +125,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
 
                                       Padding (
-                                          padding: const EdgeInsets.only(top: 30.0, left: 80),
+                                          padding: const EdgeInsets.only(top: 16.0, left: 80),
                                           child: product.isChecked == true ? const Text (
                                               '가격 제안 O'
                                           ) : const Text (
                                               '가격 제안 X'
+                                          )
+                                      ),
+                                    ],
+                                  ),
+
+                                  Row (
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+
+                                    children: [
+
+                                      Padding (
+                                          padding: const EdgeInsets.only(top: 8.0, left: 162.0),
+                                          child: GestureDetector (
+                                            onTap: () {
+                                              _productRepository.favoriteAddProducts();
+                                            },
+
+                                            child: Text (
+                                              '관심: ${product.favoriteCount.toString()}',
+                                              style: const TextStyle (
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           )
                                       ),
                                     ],
