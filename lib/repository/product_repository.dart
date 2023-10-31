@@ -52,6 +52,16 @@ class ProductRepository {
     }
   }
 
+  Future<void> getFavoriteProduct(String title) async {
+    try {
+      await _fireStore.collection('favorites').add({
+        'title': title,
+      });
+    } catch (e) {
+      print('Error adding favorite product: $e');
+    }
+  }
+
   Future<int> getUserProductCount() async {
     var querySnapshot = await _fireStore
         .collection('products')

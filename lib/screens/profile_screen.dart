@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/model/product.dart';
 import 'package:customer_manager/repository/product_repository.dart';
+import 'package:customer_manager/screens/product/product_selling_screen.dart';
 import 'package:customer_manager/widgets/profile/build_circular_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -114,69 +115,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
 
-            const Padding (
-              padding: EdgeInsets.only(left: 24.0, top: 56.0),
-              child: Text (
-                '내 상품 내역',
-                style: TextStyle (
-                  fontSize: 20.0,
+            Padding (
+              padding: const EdgeInsets.only(top: 56.0),
+              child: Row (
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
 
-                ),
-              ),
-            ),
+                children: [
+                  SizedBox (
+                    width: 110,
+                    height: 110,
 
-            FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              future: productRepository.getUserProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+                    child: GestureDetector (
+                      onTap: () {
+                        Navigator.of(context).push (
+                          MaterialPageRoute(builder: (_) => const ProductSellingScreen()),
+                        );
+                      },
 
-                var productDocs = snapshot.data?.docs;
+                      child: Card (
+                        child: Column (
 
-                if (productDocs == null || productDocs.isEmpty) {
-                  return const Text(
-                    '이런 상품을 등록하지 않았군요.',
-                  );
-                }
+                          children: [
+                            Padding (
+                              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                              child: SizedBox (
+                                width: 70,
+                                height: 70,
+                                child: Image.asset (
+                                  'assets/image/product.png'
+                                ),
+                              ),
+                            ),
 
-                var productWidgets = productDocs.map((productDoc) {
-                  var product = ProductModel.fromSnapshot(productDoc);
-                  var imageUrl = product.imageUrl;
-
-                  return Padding (
-                    padding: const EdgeInsets.only(top: 16.0, left: 24.0),
-                    child: Row (
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-                        CachedNetworkImage(
-                          width: 120,
-                          height: 120,
-                          imageUrl: imageUrl.toString(),
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList();
-
-                return Expanded (
-                  child: SizedBox (
-                    width: MediaQuery.of(context).size.width,
-                    height: 10,
-                    child: ListView (
-                      scrollDirection: Axis.horizontal,
-
-                      children: productWidgets,
+                            const Padding (
+                              padding: EdgeInsets.only(top: 6.0, left: 12.0, right: 12.0),
+                              child: Text (
+                                '판매 내역',
+                                style: TextStyle (
+                                  fontSize: 16.0,
+                                ),
+                              )
+                            )
+                          ],
+                        )
+                      ),
                     ),
                   ),
-                );
-              },
+
+                  SizedBox (
+                    width: 110,
+                    height: 110,
+
+                    child: Card (
+                        child: Column (
+
+                          children: [
+                            Padding (
+                              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                              child: SizedBox (
+                                width: 70,
+                                height: 70,
+                                child: Image.asset (
+                                    'assets/image/favorite.png'
+                                ),
+                              ),
+                            ),
+
+                            const Padding (
+                                padding: EdgeInsets.only(top: 6.0, left: 12.0, right: 12.0),
+                                child: Text (
+                                  '관심 내역',
+                                  style: TextStyle (
+                                    fontSize: 16.0,
+                                  ),
+                                )
+                            )
+                          ],
+                        )
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

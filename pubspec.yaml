@@ -85,6 +85,9 @@ dependencies:
 
   roundcheckbox: ^2.0.5
 
+  # 스낵바 애니메이션
+  animated_snack_bar: ^0.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -114,6 +117,8 @@ flutter:
     - assets/image/smiling-face.png
     - assets/image/angry-face.png
     - assets/image/product.png
+    - assets/image/favorite.png
+    - assets/image/favorite_rating.png
     - assets/lottie/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

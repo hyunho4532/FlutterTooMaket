@@ -1,4 +1,5 @@
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/model/product.dart';
@@ -94,15 +95,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
 
                                 children: [
-                                  Padding (
-                                    padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
-                                    child: Text (
-                                      product.title,
-                                      style: const TextStyle (
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0
+                                  Row (
+                                    children: [
+                                      Padding (
+                                        padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
+                                        child: SizedBox (
+                                          width: 120,
+                                          height: 30,
+
+                                          child: Text (
+                                            product.title.length > 8
+                                                ? '${product.title.substring(0, 14)}...'
+                                                : product.title,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+
+                                      Padding (
+                                        padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, left: 60.0),
+                                        child: GestureDetector (
+                                          onTap: () {
+                                            AnimatedSnackBar.material(
+                                              '관심 물품으로 등록하였습니다!',
+                                              type: AnimatedSnackBarType.success,
+                                            ).show(context);
+
+                                            _productRepository.getFavoriteProduct(product.title);
+                                          },
+
+                                          child: Image.asset (
+                                            width: 20,
+                                            height: 20,
+                                            'assets/image/favorite_rating.png'
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
 
                                   Text (
@@ -160,29 +193,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
 
-                                  Opacity (
-                                    opacity: 0.0,
+                                  SizedBox (
+                                    width: 0,
+                                    height: 0,
 
-                                    child: Text (
-                                      product.userAddress,
-                                      style: const TextStyle (
-                                        fontSize: 14.0,
+                                    child: Opacity (
+                                      opacity: 0.0,
+
+                                      child: Text (
+                                        product.userAddress,
+                                        style: const TextStyle (
+                                          fontSize: 14.0,
+                                        ),
                                       ),
                                     ),
                                   ),
 
-                                  Opacity (
-                                    opacity: 0.0,
+                                  SizedBox (
+                                    width: 0,
+                                    height: 0,
 
-                                    child: Text (
-                                      product.nickname,
-                                      style: const TextStyle (
-                                        fontSize: 14.0,
+                                    child: Opacity (
+                                      opacity: 0.0,
+
+                                      child: Text (
+                                        product.nickname,
+                                        style: const TextStyle (
+                                          fontSize: 14.0,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
+
                             ],
                           ),
                         ),
