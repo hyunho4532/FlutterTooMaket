@@ -37,12 +37,14 @@ class ProductRepository {
     });
   }
 
-  Future<void> insertFavoriteProduct(String auth, String title, String imageUrl) async {
+  Future<void> insertFavoriteProduct(String auth, String title, String address, String imageUrl, String price) async {
     try {
       await _fireStore.collection('favorites').add ({
         'auth': auth,
         'title': title,
+        'address': address,
         'imageUrl': imageUrl,
+        'price': price,
       });
     } catch (e) {
       print('Error adding favorite product: $e');

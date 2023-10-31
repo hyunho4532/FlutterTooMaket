@@ -119,6 +119,8 @@ flutter:
     - assets/image/product.png
     - assets/image/favorite.png
     - assets/image/favorite_rating.png
+    - assets/image/unlock_favorite.png
+    - assets/image/lock_favorite.png
     - assets/lottie/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

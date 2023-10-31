@@ -17,7 +17,20 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold (
+      appBar: AppBar (
+        title: const Text (
+          '이러한 물품들을 등록했습니다.',
+          style: TextStyle (
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+            color: Colors.black,
+          ),
+        ),
+
+        backgroundColor: Colors.white70,
+      ),
+
       body: Column (
         children: [
           FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(

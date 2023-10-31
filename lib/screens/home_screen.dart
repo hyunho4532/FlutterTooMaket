@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final ProductRepository _productRepository = ProductRepository();
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               imageUrl != null
                                   ? SizedBox(
-                                width: 110,
-                                height: 110,
+                                width: 100,
+                                height: 100,
                                 child: CachedNetworkImage (
                                   imageUrl: '$imageUrl',
                                   fit: BoxFit.cover,
@@ -99,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Row (
                                     children: [
                                       Padding (
-                                        padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
+                                        padding: const EdgeInsets.only(top: 6.0),
                                         child: SizedBox (
                                           width: 120,
                                           height: 30,
@@ -121,45 +122,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, left: 60.0),
                                         child: GestureDetector (
                                           onTap: () {
-                                            AnimatedSnackBar.material(
-                                              '관심 물품으로 등록하였습니다!',
-                                              type: AnimatedSnackBarType.success,
-                                            ).show(context);
+                                            setState(() {
+                                              isFavorite = !isFavorite;
 
-                                            _productRepository.insertFavoriteProduct(auth.currentUser!.uid.toString(), product.title, imageUrl);
+                                              AnimatedSnackBar.material(
+                                                '관심 물품으로 등록하였습니다!',
+                                                type: AnimatedSnackBarType.success,
+                                              ).show(context);
+
+                                              _productRepository.insertFavoriteProduct(auth.currentUser!.uid.toString(), product.title, product.address, imageUrl, product.price);
+                                            });
                                           },
 
-                                          child: Image.asset (
+                                          child:  Image.asset(
+                                            'assets/image/${isFavorite ? 'lock_favorite' : 'unlock_favorite'}.png',
                                             width: 20,
                                             height: 20,
-                                            'assets/image/favorite_rating.png'
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
 
-                                  Text (
-                                    product.address,
-                                    style: const TextStyle (
-                                      fontSize: 14.0,
+                                  SizedBox (
+                                    width: 120,
+
+                                    child: Padding (
+                                      padding: const EdgeInsets.only(bottom: 16.0),
+                                      child: Text (
+                                        product.address,
+                                        style: const TextStyle (
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
 
                                   Row (
                                     children: [
-                                      Padding (
-                                        padding: const EdgeInsets.only(top: 16.0),
-                                        child: Text (
-                                          '${product.price} 원 ',
-                                          style: const TextStyle (
-                                            fontSize: 14.0,
-                                          ),
+                                      Text (
+                                        '${product.price} 원 ',
+                                        style: const TextStyle (
+                                          fontSize: 14.0,
                                         ),
                                       ),
 
                                       Padding (
-                                          padding: const EdgeInsets.only(top: 16.0, left: 80),
+                                          padding: const EdgeInsets.only(left: 80),
                                           child: product.isChecked == true ? const Text (
                                               '가격 제안 O'
                                           ) : const Text (
@@ -176,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
 
                                       Padding (
-                                          padding: const EdgeInsets.only(top: 8.0, left: 162.0),
+                                          padding: const EdgeInsets.only(left: 162.0),
                                           child: GestureDetector (
                                             onTap: () {
                                               _productRepository.favoriteAddProducts();
