@@ -10,6 +10,7 @@ class ProductModel {
   final String? imageUrl;
   final int favoriteCount;
   final bool? isChecked;
+  final bool? isSelected;
 
   ProductModel ({
     required this.authUid,
@@ -21,6 +22,7 @@ class ProductModel {
     this.imageUrl,
     required this.favoriteCount,
     this.isChecked,
+    this.isSelected,
   });
 
   toJson() {
@@ -34,6 +36,7 @@ class ProductModel {
       "imageUrl": imageUrl,
       "favoriteCount": favoriteCount,
       "isChecked": isChecked,
+      "isSelected": isSelected,
     };
   }
 
@@ -50,6 +53,7 @@ class ProductModel {
       imageUrl: data["imageUrl"],
       favoriteCount: data["favoriteCount"] ?? 0,
       isChecked: data["isChecked"],
+      isSelected: data["isSelected"],
     );
   }
 }

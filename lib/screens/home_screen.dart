@@ -134,11 +134,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                             });
                                           },
 
-                                          child:  Image.asset(
-                                            'assets/image/${isFavorite ? 'lock_favorite' : 'unlock_favorite'}.png',
+                                          child: isFavorite ?
+                                          Image.asset(
+                                            'assets/image/lock_favorite.png',
                                             width: 20,
                                             height: 20,
-                                          ),
+                                          )
+                                              : Image.asset(
+                                            'assets/image/unlock_favorite.png',
+                                            width: 20,
+                                            height: 20,
+                                          )
                                         ),
                                       ),
                                     ],

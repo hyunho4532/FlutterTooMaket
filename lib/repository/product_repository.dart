@@ -23,7 +23,7 @@ class ProductRepository {
     return await _fireStore.collection('users').doc(auth.currentUser!.uid.toString()).get();
   }
 
-  Future<void> insertProducts(String title, String price, String address, String userAddress, String nickname, String imageUrl, int favoriteCount, bool isChecked) async {
+  Future<void> insertProducts(String title, String price, String address, String userAddress, String nickname, String imageUrl, int favoriteCount, bool isChecked, bool isSelected, ) async {
     await _fireStore.collection('products').add({
       'auth': auth.currentUser!.uid.toString(),
       'title': title,
@@ -33,6 +33,7 @@ class ProductRepository {
       'nickname': nickname,
       'imageUrl': imageUrl,
       'favoriteCount': favoriteCount,
+      'isSelected': isSelected,
       'isChecked': isChecked,
     });
   }

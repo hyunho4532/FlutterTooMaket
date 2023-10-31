@@ -26,6 +26,7 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   int favoriteCount = 0;
 
   bool? isChecked = false;
+  bool? isSelected = false;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
@@ -99,7 +100,7 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             children: [
               GestureDetector (
                 onTap: () {
-                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _userAddressController.text, _nicknameController.text, _imageUrl!, favoriteCount, isChecked!);
+                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _userAddressController.text, _nicknameController.text, _imageUrl!, favoriteCount, isChecked!, isSelected!);
                 },
 
                 child: const Padding (
