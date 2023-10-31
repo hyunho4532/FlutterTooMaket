@@ -13,6 +13,11 @@ class ProductRepository {
     var userUID = auth.currentUser!.uid.toString();
     return await _fireStore.collection('products').where('auth', isEqualTo: userUID).get();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getFavoriteUserProducts() async {
+    var userUID = auth.currentUser!.uid.toString();
+    return await _fireStore.collection('favorites').where('auth', isEqualTo: userUID).get();
+  }
   
   Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
     return await _fireStore.collection('users').doc(auth.currentUser!.uid.toString()).get();
@@ -32,6 +37,18 @@ class ProductRepository {
     });
   }
 
+  Future<void> insertFavoriteProduct(String auth, String title, String imageUrl) async {
+    try {
+      await _fireStore.collection('favorites').add ({
+        'auth': auth,
+        'title': title,
+        'imageUrl': imageUrl,
+      });
+    } catch (e) {
+      print('Error adding favorite product: $e');
+    }
+  }
+
   Future<void> favoriteAddProducts() async {
     DocumentReference productRef = _fireStore.collection('products').doc(auth.currentUser!.uid.toString());
     DocumentSnapshot productSnapshot = await productRef.get();
@@ -49,16 +66,6 @@ class ProductRepository {
       }
     } else {
       print('해당 제품을 찾을 수 없습니다.');
-    }
-  }
-
-  Future<void> getFavoriteProduct(String title) async {
-    try {
-      await _fireStore.collection('favorites').add({
-        'title': title,
-      });
-    } catch (e) {
-      print('Error adding favorite product: $e');
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/model/product.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:customer_manager/screens/product/product_detail_screen.dart';
+import 'package:customer_manager/services/auth/firebaseAuth.dart';
 import 'package:customer_manager/widgets/floating_button/build_floating_button.dart';
 import 'package:flutter/material.dart';
 
@@ -125,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               type: AnimatedSnackBarType.success,
                                             ).show(context);
 
-                                            _productRepository.getFavoriteProduct(product.title);
+                                            _productRepository.insertFavoriteProduct(auth.currentUser!.uid.toString(), product.title, imageUrl);
                                           },
 
                                           child: Image.asset (

@@ -48,7 +48,7 @@ class ProductModel {
       userAddress: data["userAddress"] ?? "",
       nickname: data["nickname"] ?? "",
       imageUrl: data["imageUrl"],
-      favoriteCount: data["favoriteCount"],
+      favoriteCount: data["favoriteCount"] ?? 0,
       isChecked: data["isChecked"],
     );
   }
