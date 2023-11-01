@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class ProductInsertScreen extends StatefulWidget {
@@ -37,6 +37,8 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final auth = FirebaseAuth.instance;
 
   final ProductRepository _productRepository = ProductRepository();
+
+  late KakaoMapController mapController;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -213,18 +215,14 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
                         title: Text('주소 조회'),
                         content: Column (
                           children: [
-                            KakaoMapView(
-                              width: MediaQuery.of(context).size.width,
-                              height: 400,
-                              kakaoMapKey: '4e21750c2b8367ad9b5d31de6b0e8030',
-                              lat: 33.450701,
-                              lng: 126.570667,
-                              showMapTypeControl: true,
-                              showZoomControl: true,
-                              markerImageURL: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-                              onTapMarker: (message) {
-                                //event callback when the marker is tapped
-                              }
+                            Expanded (
+                              child: SizedBox (
+                                child: KakaoMap (
+                                  onMapCreated: ((controller) {
+                                    mapController = controller;
+                                  }),
+                                ),
+                              ),
                             )
                           ],
                         ),

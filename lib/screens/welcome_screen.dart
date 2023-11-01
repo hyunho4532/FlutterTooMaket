@@ -3,6 +3,7 @@ import 'package:customer_manager/widgets/login/login_screen.dart';
 import 'package:customer_manager/widgets/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,8 @@ void main() async {
       child: const WelcomeScreen(),
     ),
   );
+  
+  AuthRepository.initialize(appKey: '5535b1f319fbb968a0cc0d3ba2cfe872');
 
   WidgetsFlutterBinding.ensureInitialized();
 
