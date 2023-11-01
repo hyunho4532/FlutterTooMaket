@@ -204,10 +204,16 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
 
             Padding (
               padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
-              child: TextFormField (
-                controller: _addressController,
-                decoration: const InputDecoration (
-                  hintText: '주소를 입력해주세요.',
+              child: GestureDetector (
+                onTap: () {
+                  
+                },
+
+                child: TextFormField (
+                  controller: _addressController,
+                  decoration: const InputDecoration (
+                    hintText: '주소를 입력해주세요.',
+                  ),
                 ),
               ),
             ),
