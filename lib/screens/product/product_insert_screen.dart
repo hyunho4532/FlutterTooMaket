@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class ProductInsertScreen extends StatefulWidget {
@@ -206,60 +206,41 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
               padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
               child: GestureDetector (
                 onTap: () {
-                  
+                  showDialog (
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog (
+                        title: Text('주소 조회'),
+                        content: Column (
+                          children: [
+                            KakaoMapView(
+                              width: MediaQuery.of(context).size.width,
+                              height: 400,
+                              kakaoMapKey: '4e21750c2b8367ad9b5d31de6b0e8030',
+                              lat: 33.450701,
+                              lng: 126.570667,
+                              showMapTypeControl: true,
+                              showZoomControl: true,
+                              markerImageURL: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+                              onTapMarker: (message) {
+                                //event callback when the marker is tapped
+                              }
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  );
                 },
 
                 child: TextFormField (
+                  enabled: false,
                   controller: _addressController,
                   decoration: const InputDecoration (
                     hintText: '주소를 입력해주세요.',
                   ),
                 ),
               ),
-            ),
-
-            Padding (
-                padding: const EdgeInsets.only(left: 24.0, top: 6.0, right: 120.0),
-                child: MultiSelectDropDown (
-                  onOptionSelected: (List<ValueItem> selectedOptions) {
-
-                  },
-
-                  options: const [
-                    ValueItem (
-                      label: '스포츠', value: '스포츠',
-                    ),
-
-                    ValueItem (
-                      label: '전자기기/부품', value: '전자기기/부품',
-                    ),
-
-                    ValueItem (
-                      label: '피부/미용', value: '피부/미용',
-                    ),
-
-                    ValueItem (
-                      label: '가구', value: '가구',
-                    ),
-
-                    ValueItem (
-                      label: '기타', value: '기타',
-                    ),
-                  ],
-
-                  selectionType: SelectionType.single,
-                  chipConfig: const ChipConfig (
-                      wrapType: WrapType.wrap
-                  ),
-
-                  dropdownHeight: 300,
-
-                  optionTextStyle: const TextStyle (
-                      fontSize: 16
-                  ),
-
-                  selectedOptionIcon: const Icon(Icons.check_circle),
-                )
             ),
 
             Padding (

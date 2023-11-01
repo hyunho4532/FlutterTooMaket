@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  http: ^1.1.0
+  http: ^0.13.4
   animated_bottom_navigation_bar: ^1.2.1
   flutter_image_slideshow: ^0.1.6
   animated_text_kit: ^4.2.2
@@ -74,9 +74,6 @@ dependencies:
   # 갤러리에서 이미지 가져오기
   image_picker: ^0.8.4+4
 
-  # 드롭다운
-  multi_dropdown: ^2.1.0
-
   firebase_storage: ^11.4.0
 
   cached_network_image: ^3.3.0
@@ -87,6 +84,8 @@ dependencies:
 
   # 스낵바 애니메이션
   animated_snack_bar: ^0.4.0
+
+  kakao_map_plugin: ^0.2.2
 
 dev_dependencies:
   flutter_test:
