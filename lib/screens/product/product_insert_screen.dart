@@ -1,13 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class ProductInsertScreen extends StatefulWidget {
@@ -34,11 +35,22 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  static const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
   final auth = FirebaseAuth.instance;
 
   final ProductRepository _productRepository = ProductRepository();
-
-  late KakaoMapController mapController;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -208,26 +220,60 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
               padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
               child: GestureDetector (
                 onTap: () {
-                  showDialog (
+                  showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog (
-                        title: Text('주소 조회'),
-                        content: Column (
-                          children: [
-                            Expanded (
-                              child: SizedBox (
-                                child: KakaoMap (
-                                  onMapCreated: ((controller) {
-                                    mapController = controller;
-                                  }),
+                      return AlertDialog(
+                        title: const Text('주소 조회'),
+                        content: SizedBox(
+                          width: 1200,  // Adjust the width as needed
+                          height: 1200, // Adjust the height as needed
+                          child: Column(
+                            children: [
+                              Expanded (
+                                child: SizedBox(
+                                  width: 500, // Expand to maximum width
+                                  height: 300, // Expand to maximum height
+                                  child: KakaoMapView (
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 400,
+                                      kakaoMapKey: '26cd2111662864fb97180f26f8c2b2ed',
+                                      lat: 33.450701,
+                                      lng: 126.570667,
+                                      showMapTypeControl: true,
+                                      showZoomControl: true,
+                                      markerImageURL: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+                                      onTapMarker: (message) {
+
+                                      })
                                 ),
                               ),
-                            )
-                          ],
+
+                              Padding (
+                                padding: const EdgeInsets.only(top: 32.0),
+                                child: SizedBox (
+                                  width: MediaQuery.of(context).size.width,
+
+                                  child: ElevatedButton (
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+
+                                    child: const Text (
+                                      '주소 조회 완료!',
+                                      style: TextStyle (
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
-                    }
+                    },
                   );
                 },
 

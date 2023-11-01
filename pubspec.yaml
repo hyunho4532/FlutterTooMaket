@@ -85,7 +85,13 @@ dependencies:
   # 스낵바 애니메이션
   animated_snack_bar: ^0.4.0
 
-  kakao_map_plugin: ^0.2.2
+  # 구글 지도
+  google_maps_flutter: ^2.5.0
+
+  # 카카오 지도
+  kakaomap_webview: ^0.6.2
+
+  flutter_config: ^2.0.2
 
 dev_dependencies:
   flutter_test:
