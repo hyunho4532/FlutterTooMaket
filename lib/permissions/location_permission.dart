@@ -1,31 +1,16 @@
-import 'package:location/location.dart';
-
-double lat = 0.0;
-double lng = 0.0;
-Location location = Location();
-bool _serviceEnabled = false;
-PermissionStatus _permissionGranted = PermissionStatus.denied;
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationPermission {
-  void _locateMe() async {
-    _serviceEnabled = await location.serviceEnabled();
 
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
+  // 현재 위치 관련 권한 가져오기
+  Future<bool> getLocationPermission() async {
+    Map<Permission, PermissionStatus> status =
+    await [Permission.location].request();
 
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
+    if (await Permission.location.isGranted) {
+      return Future.value(true);
+    } else {
+      return Future.value(false);
     }
   }
 }

@@ -30,12 +30,6 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   bool? isChecked = false;
   bool? isSelected = false;
 
-  double lat = 0.0;
-  double lng = 0.0;
-  Location location = Location();
-  bool _serviceEnabled = false;
-  PermissionStatus _permissionGranted = PermissionStatus.denied;
-
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _userAddressController = TextEditingController();
@@ -112,28 +106,6 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
       var address = userData['address'];
       _nicknameController.text = nickname;
       _userAddressController.text = address;
-    }
-  }
-
-  void _locateMe() async {
-    _serviceEnabled = await location.serviceEnabled();
-
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
     }
   }
 
@@ -263,7 +235,10 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
               padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
               child: GestureDetector (
                 onTap: () {
-                  _locateMe();
+
+                  // 권한 요청하기
+                  locationPermission.getLocationPermission();
+
                   showDialog (
                     context: context,
                     builder: (BuildContext context) {

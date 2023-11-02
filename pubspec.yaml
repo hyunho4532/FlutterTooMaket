@@ -93,6 +93,8 @@ dependencies:
 
   flutter_config: ^2.0.2
 
+  permission_handler: ^8.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
