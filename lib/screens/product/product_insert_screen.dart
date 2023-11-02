@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer_manager/permissions/location_permission.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class ProductInsertScreen extends StatefulWidget {
@@ -28,26 +30,27 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   bool? isChecked = false;
   bool? isSelected = false;
 
+  double lat = 0.0;
+  double lng = 0.0;
+  Location location = Location();
+  bool _serviceEnabled = false;
+  PermissionStatus _permissionGranted = PermissionStatus.denied;
+
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _userAddressController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  // 기존 위도와 경도
-  double _latitude = 33.450701;
-  double _longitude = 126.570667;
-
-  void _onCameraMove(double lat, double lng) {
-    setState(() {
-      _latitude = lat;
-      _longitude = lng;
-    });
-  }
-
   final auth = FirebaseAuth.instance;
 
+  late GoogleMapController _controller;
+  final List<Marker> _markers = [];
+  late LocationData _locationData;
+
   final ProductRepository _productRepository = ProductRepository();
+
+  LocationPermission locationPermission = LocationPermission();
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -71,35 +74,31 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
     });
   }
 
-  final Completer<GoogleMapController> _controller =
-  Completer<GoogleMapController>();
-
   static const CameraPosition _kGooglePlex = CameraPosition (
     target: LatLng(37.4537251, 126.7960716),
     zoom: 14.4746,
   );
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  void _updatePosition() {
+    var marker = _markers.firstWhere((p) => p.markerId == const MarkerId('1'));
 
-  List<Marker> _markers = [];
+    _markers.remove(marker);
+
+    _markers.add(
+      Marker(
+        markerId: const MarkerId('1'),
+        position: LatLng(_kGooglePlex.target.latitude, _kGooglePlex.target.longitude),
+        draggable: true,
+      ),
+    );
+
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
     getUserName();
-
-    _markers.add (
-      Marker (
-        markerId: const MarkerId("1"),
-        draggable: true,
-        onTap: () => print("Marker!"),
-        position: const LatLng(37.4537251, 126.7960716)
-      )
-    );
   }
 
   void getUserName() async {
@@ -113,6 +112,28 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
       var address = userData['address'];
       _nicknameController.text = nickname;
       _userAddressController.text = address;
+    }
+  }
+
+  void _locateMe() async {
+    _serviceEnabled = await location.serviceEnabled();
+
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
     }
   }
 
@@ -242,7 +263,8 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
               padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
               child: GestureDetector (
                 onTap: () {
-                  showDialog(
+                  _locateMe();
+                  showDialog (
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
@@ -260,8 +282,9 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
                                     mapType: MapType.normal,
                                     markers: Set.from(_markers),
                                     initialCameraPosition: _kGooglePlex,
-                                    onMapCreated: (GoogleMapController controller) {
-                                      _controller.complete(controller);
+                                    myLocationEnabled: false,
+                                    onCameraIdle: () {
+                                      _updatePosition();
                                     },
                                     myLocationButtonEnabled: false,
                                   )

@@ -88,6 +88,9 @@ dependencies:
   # 구글 지도
   google_maps_flutter: ^2.5.0
 
+  # 현재 내 위치 찾기
+  location: ^5.0.3
+
   flutter_config: ^2.0.2
 
 dev_dependencies:
