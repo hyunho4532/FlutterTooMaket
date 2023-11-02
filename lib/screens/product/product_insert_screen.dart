@@ -8,7 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class ProductInsertScreen extends StatefulWidget {
@@ -35,18 +34,16 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  // 기존 위도와 경도
+  double _latitude = 33.450701;
+  double _longitude = 126.570667;
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  void _onCameraMove(double lat, double lng) {
+    setState(() {
+      _latitude = lat;
+      _longitude = lng;
+    });
+  }
 
   final auth = FirebaseAuth.instance;
 
@@ -74,10 +71,35 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
     });
   }
 
+  final Completer<GoogleMapController> _controller =
+  Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition (
+    target: LatLng(37.4537251, 126.7960716),
+    zoom: 14.4746,
+  );
+
+  static const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
+  List<Marker> _markers = [];
+
   @override
   void initState() {
     super.initState();
     getUserName();
+
+    _markers.add (
+      Marker (
+        markerId: const MarkerId("1"),
+        draggable: true,
+        onTap: () => print("Marker!"),
+        position: const LatLng(37.4537251, 126.7960716)
+      )
+    );
   }
 
   void getUserName() async {
@@ -234,18 +256,15 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
                                 child: SizedBox(
                                   width: 500, // Expand to maximum width
                                   height: 300, // Expand to maximum height
-                                  child: KakaoMapView (
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 400,
-                                      kakaoMapKey: '26cd2111662864fb97180f26f8c2b2ed',
-                                      lat: 33.450701,
-                                      lng: 126.570667,
-                                      showMapTypeControl: true,
-                                      showZoomControl: true,
-                                      markerImageURL: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-                                      onTapMarker: (message) {
-
-                                      })
+                                  child: GoogleMap (
+                                    mapType: MapType.normal,
+                                    markers: Set.from(_markers),
+                                    initialCameraPosition: _kGooglePlex,
+                                    onMapCreated: (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                    },
+                                    myLocationButtonEnabled: false,
+                                  )
                                 ),
                               ),
 

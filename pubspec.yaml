@@ -88,9 +88,6 @@ dependencies:
   # 구글 지도
   google_maps_flutter: ^2.5.0
 
-  # 카카오 지도
-  kakaomap_webview: ^0.6.2
-
   flutter_config: ^2.0.2
 
 dev_dependencies:
