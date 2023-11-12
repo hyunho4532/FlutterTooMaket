@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer_manager/const/show_category_list.dart';
 import 'package:customer_manager/permissions/location_permission.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,16 +37,48 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
   final TextEditingController _userAddressController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _categorySelectController = TextEditingController();
 
   final auth = FirebaseAuth.instance;
 
-  late GoogleMapController _controller;
-  final List<Marker> _markers = [];
-  late LocationData _locationData;
+  final List<Marker> _markers = [
+    const Marker (
+      markerId: MarkerId('1'),
+      position: LatLng(37.4537251, 126.7960716),
+      draggable: true,
+    ),
+  ];
 
   final ProductRepository _productRepository = ProductRepository();
 
   LocationPermission locationPermission = LocationPermission();
+  final Location _location = Location();
+
+  void _updatePosition() async {
+    var locationData = await _location.getLocation();
+
+    print(locationData);
+
+    var marker = _markers.firstWhere (
+      (element) => element.markerId == const MarkerId('1'),
+    );
+
+    if (marker != null) {
+      _markers.remove(marker);
+    }
+
+    _markers.add (
+      Marker (
+        markerId: const MarkerId('1'),
+        position: LatLng(locationData.latitude!, locationData.longitude!),
+        draggable: true,
+      )
+    );
+
+    setState(() {
+
+    });
+  }
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -72,22 +106,6 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
     target: LatLng(37.4537251, 126.7960716),
     zoom: 14.4746,
   );
-
-  void _updatePosition() {
-    var marker = _markers.firstWhere((p) => p.markerId == const MarkerId('1'));
-
-    _markers.remove(marker);
-
-    _markers.add(
-      Marker(
-        markerId: const MarkerId('1'),
-        position: LatLng(_kGooglePlex.target.latitude, _kGooglePlex.target.longitude),
-        draggable: true,
-      ),
-    );
-
-    setState(() {});
-  }
 
   @override
   void initState() {
@@ -129,7 +147,11 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             children: [
               GestureDetector (
                 onTap: () {
-                  _productRepository.insertProducts(_titleController.text, _priceController.text, _addressController.text, _userAddressController.text, _nicknameController.text, _imageUrl!, favoriteCount, isChecked!, isSelected!);
+                  _productRepository.insertProducts (
+                      _titleController.text, _priceController.text, _addressController.text,
+                      _userAddressController.text, _nicknameController.text, _categorySelectController.text,
+                      _imageUrl!, favoriteCount, isChecked!, isSelected!
+                  );
                 },
 
                 child: const Padding (
@@ -232,12 +254,26 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
             ),
 
             Padding (
+                padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
+                child: CustomDropdown (
+                  hintText: 'ddd',
+                  items: dropdownCategoryList,
+                  initialItem: dropdownCategoryList[0],
+                  onChanged: (value) {
+                    _categorySelectController.text = value;
+                  },
+                )
+            ),
+
+            Padding (
               padding: const EdgeInsets.only(left: 24.0, top: 48.0, right: 24.0, bottom: 36.0),
               child: GestureDetector (
                 onTap: () {
 
                   // 권한 요청하기
                   locationPermission.getLocationPermission();
+
+                  _updatePosition();
 
                   showDialog (
                     context: context,
@@ -306,6 +342,16 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
 
             Padding (
               padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
+              child: TextFormField (
+                controller: _userAddressController,
+                decoration: const InputDecoration (
+                  hintText: '주소를 입력해주세요.',
+                ),
+              ),
+            ),
+
+            Padding (
+              padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
               child: Opacity (
                 opacity: 0.0,
 
@@ -315,19 +361,6 @@ class _ProductInsertScreenState extends State<ProductInsertScreen> {
                     hintText: '이름을 입력해주세요.',
                   ),
 
-                ),
-              ),
-            ),
-
-            Padding (
-              padding: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
-              child: Opacity(
-                opacity: 0.0, // 0.0으로 설정하여 숨김
-                child: TextFormField (
-                  controller: _userAddressController,
-                  decoration: const InputDecoration (
-                    hintText: '주소를 입력해주세요.',
-                  ),
                 ),
               ),
             ),

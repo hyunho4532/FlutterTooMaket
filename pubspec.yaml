@@ -91,6 +91,9 @@ dependencies:
   # 현재 내 위치 찾기
   location: ^5.0.3
 
+  # 드랍다운 (애니메이션 효과)
+  animated_custom_dropdown: 2.0.0
+
   flutter_config: ^2.0.2
 
   permission_handler: ^8.2.0

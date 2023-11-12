@@ -7,6 +7,7 @@ class ProductModel {
   final String address;
   final String userAddress;
   final String nickname;
+  final String category;
   final String? imageUrl;
   final int favoriteCount;
   final bool? isChecked;
@@ -19,6 +20,7 @@ class ProductModel {
     required this.address,
     required this.userAddress,
     required this.nickname,
+    required this.category,
     this.imageUrl,
     required this.favoriteCount,
     this.isChecked,
@@ -33,6 +35,7 @@ class ProductModel {
       "address": address,
       "userAddress": userAddress,
       "nickname": nickname,
+      "category": category,
       "imageUrl": imageUrl,
       "favoriteCount": favoriteCount,
       "isChecked": isChecked,
@@ -50,6 +53,7 @@ class ProductModel {
       address: data["address"] ?? "",
       userAddress: data["userAddress"] ?? "",
       nickname: data["nickname"] ?? "",
+      category: data["category"] ?? "",
       imageUrl: data["imageUrl"],
       favoriteCount: data["favoriteCount"] ?? 0,
       isChecked: data["isChecked"],
