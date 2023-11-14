@@ -94,6 +94,9 @@ dependencies:
   # 드랍다운 (애니메이션 효과)
   animated_custom_dropdown: 2.0.0
 
+  # 체크박스 (애니메이션 효과)
+  msh_checkbox: ^2.0.1
+
   flutter_config: ^2.0.2
 
   permission_handler: ^8.2.0
