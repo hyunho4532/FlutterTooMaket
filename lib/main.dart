@@ -50,7 +50,7 @@ class _MainPageState extends State<MainPage> {
   Widget moviePage() {
     switch(_bottomNavIndex) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
         return const SearchScreen();
       case 2:
