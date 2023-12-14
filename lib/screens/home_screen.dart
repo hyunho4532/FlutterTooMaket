@@ -67,161 +67,175 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
 
-                        child: SizedBox (
-                          width: 150,
-                          height: 150,
+                        child: Padding (
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox (
+                            width: 140,
+                            height: 140,
 
-                          child: Padding (
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row (
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Card (
+                              shape: RoundedRectangleBorder (
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              
+                              child: SizedBox (
+                                width: 150,
+                                height: 150,
 
-                              children: [
-                                imageUrl != null
-                                    ? SizedBox(
-                                  width: 105,
-                                  height: 110,
-                                  child: CachedNetworkImage (
-                                    imageUrl: '$imageUrl',
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  ),
-                                )
-                                    : Container(
-                                  width: 150,
-                                  height: 150,
-                                  color: Colors.grey,
-                                ),
+                                child: Padding (
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row (
+                                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                                const SizedBox(width: 16),
+                                    children: [
+                                      imageUrl != null
+                                          ? SizedBox(
+                                        width: 105,
+                                        height: 110,
+                                        child: CachedNetworkImage (
+                                          imageUrl: '$imageUrl',
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                        ),
+                                      )
+                                          : Container(
+                                        width: 150,
+                                        height: 150,
+                                        color: Colors.grey,
+                                      ),
 
-                                Column (
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                      const SizedBox(width: 16),
 
-                                  children: [
-                                    Row (
-                                      children: [
-                                        Padding (
-                                          padding: const EdgeInsets.only(top: 6.0),
-                                          child: SizedBox (
-                                            width: 120,
-                                            height: 30,
+                                      Column (
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
 
-                                            child: Text (
-                                              product.title.length > 50
-                                                  ? '${product.title.substring(0, 12)}...'
-                                                  : product.title,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0,
+                                        children: [
+                                          Row (
+                                            children: [
+                                              Padding (
+                                                padding: const EdgeInsets.only(top: 6.0),
+                                                child: SizedBox (
+                                                  width: 120,
+                                                  height: 30,
+
+                                                  child: Text (
+                                                    product.title.length > 50
+                                                        ? '${product.title.substring(0, 12)}...'
+                                                        : product.title,
+                                                    style: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 16.0,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
                                               ),
-                                              overflow: TextOverflow.ellipsis,
+
+                                              Padding (
+                                                padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, left: 60.0),
+                                                child: GestureDetector (
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isFavorite = !isFavorite;
+
+                                                      AnimatedSnackBar.material(
+                                                        '관심 물품으로 등록하였습니다!',
+                                                        type: AnimatedSnackBarType.success,
+                                                      ).show(context);
+
+                                                      _productRepository.insertFavoriteProduct(auth.currentUser!.uid.toString(), product.title, product.address, imageUrl, product.price);
+                                                    });
+                                                  },
+
+                                                  child: isFavorite ?
+                                                  Image.asset(
+                                                    'assets/image/lock_favorite.png',
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                      : Image.asset(
+                                                    'assets/image/unlock_favorite.png',
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          SizedBox (
+                                            width: 150,
+
+                                            child: Padding (
+                                              padding: const EdgeInsets.only(bottom: 16.0),
+                                              child: Text (
+                                                product.userAddress,
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
 
-                                        Padding (
-                                          padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, left: 60.0),
-                                          child: GestureDetector (
-                                            onTap: () {
-                                              setState(() {
-                                                isFavorite = !isFavorite;
+                                          Row (
+                                            children: [
+                                              Text (
+                                                '${product.price} 원 ',
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
 
-                                                AnimatedSnackBar.material(
-                                                  '관심 물품으로 등록하였습니다!',
-                                                  type: AnimatedSnackBarType.success,
-                                                ).show(context);
-
-                                                _productRepository.insertFavoriteProduct(auth.currentUser!.uid.toString(), product.title, product.address, imageUrl, product.price);
-                                              });
-                                            },
-
-                                            child: isFavorite ?
-                                            Image.asset(
-                                              'assets/image/lock_favorite.png',
-                                              width: 20,
-                                              height: 20,
-                                            )
-                                                : Image.asset(
-                                              'assets/image/unlock_favorite.png',
-                                              width: 20,
-                                              height: 20,
-                                            )
+                                              Padding (
+                                                  padding: const EdgeInsets.only(left: 80),
+                                                  child: product.isChecked == true ? const Text (
+                                                      '가격 제안 O'
+                                                  ) : const Text (
+                                                      '가격 제안 X'
+                                                  )
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
 
-                                    SizedBox (
-                                      width: 150,
+                                          SizedBox (
+                                            width: 0,
+                                            height: 0,
 
-                                      child: Padding (
-                                        padding: const EdgeInsets.only(bottom: 16.0),
-                                        child: Text (
-                                          product.userAddress,
-                                          style: const TextStyle (
-                                            fontSize: 14.0,
+                                            child: Opacity (
+                                              opacity: 0.0,
+
+                                              child: Text (
+                                                product.userAddress,
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
+
+                                          SizedBox (
+                                            width: 0,
+                                            height: 0,
+
+                                            child: Opacity (
+                                              opacity: 0.0,
+
+                                              child: Text (
+                                                product.nickname,
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-
-                                    Row (
-                                      children: [
-                                        Text (
-                                          '${product.price} 원 ',
-                                          style: const TextStyle (
-                                            fontSize: 14.0,
-                                          ),
-                                        ),
-
-                                        Padding (
-                                            padding: const EdgeInsets.only(left: 80),
-                                            child: product.isChecked == true ? const Text (
-                                                '가격 제안 O'
-                                            ) : const Text (
-                                                '가격 제안 X'
-                                            )
-                                        ),
-                                      ],
-                                    ),
-
-                                    SizedBox (
-                                      width: 0,
-                                      height: 0,
-
-                                      child: Opacity (
-                                        opacity: 0.0,
-
-                                        child: Text (
-                                          product.userAddress,
-                                          style: const TextStyle (
-                                            fontSize: 14.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    SizedBox (
-                                      width: 0,
-                                      height: 0,
-
-                                      child: Opacity (
-                                        opacity: 0.0,
-
-                                        child: Text (
-                                          product.nickname,
-                                          style: const TextStyle (
-                                            fontSize: 14.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
