@@ -117,96 +117,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             Padding (
-              padding: const EdgeInsets.only(top: 56.0),
-              child: Row (
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
+                child: SizedBox (
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
 
-                children: [
-                  SizedBox (
-                    width: 110,
-                    height: 110,
+                  child: GestureDetector (
+                    onTap: () {
+                      Navigator.of(context).push (
+                        MaterialPageRoute(builder: (_) => const ProductSellingScreen()),
+                      );
+                    },
 
-                    child: GestureDetector (
-                      onTap: () {
-                        Navigator.of(context).push (
-                          MaterialPageRoute(builder: (_) => const ProductSellingScreen()),
-                        );
-                      },
+                    child: const Card (
+                      child: Column (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
 
-                      child: Card (
-                        child: Column (
-
-                          children: [
-                            Padding (
-                              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                              child: SizedBox (
-                                width: 70,
-                                height: 70,
-                                child: Image.asset (
-                                  'assets/image/product.png'
-                                ),
+                        children: [
+                          Padding (
+                            padding: EdgeInsets.only(left: 16.0),
+                            child: Text (
+                              '판매 내역',
+                              style: TextStyle (
+                                fontSize: 16.0,
                               ),
                             ),
-
-                            const Padding (
-                              padding: EdgeInsets.only(top: 6.0, left: 12.0, right: 12.0),
-                              child: Text (
-                                '판매 내역',
-                                style: TextStyle (
-                                  fontSize: 16.0,
-                                ),
-                              )
-                            )
-                          ],
-                        )
-                      ),
+                          )
+                        ],
+                      )
                     ),
                   ),
-
-                  SizedBox (
-                    width: 110,
-                    height: 110,
-
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push (
-                          MaterialPageRoute(builder: (_) => const ProductFavoriteScreen()),
-                        );
-                      },
-
-                      child: Card (
-                          child: Column (
-
-                            children: [
-                              Padding (
-                                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                child: SizedBox (
-                                  width: 70,
-                                  height: 70,
-                                  child: Image.asset (
-                                      'assets/image/favorite.png'
-                                  ),
-                                ),
-                              ),
-
-                              const Padding (
-                                  padding: EdgeInsets.only(top: 6.0, left: 12.0, right: 12.0),
-                                  child: Text (
-                                    '관심 내역',
-                                    style: TextStyle (
-                                      fontSize: 16.0,
-                                    ),
-                                  )
-                              )
-                            ],
-                          )
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                ),
             ),
+
+            Padding (
+              padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0) ,
+              child: SizedBox (
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push (
+                      MaterialPageRoute(builder: (_) => const ProductFavoriteScreen()),
+                    );
+                  },
+
+                  child: const Card (
+                      child: Column (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+
+                        children: [
+                          Padding (
+                            padding: EdgeInsets.only(left: 16.0),
+                            child: Text (
+                              '관심 내역',
+                              style: TextStyle (
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
