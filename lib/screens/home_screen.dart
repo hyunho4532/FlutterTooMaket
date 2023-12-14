@@ -110,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 30,
 
                                             child: Text (
-                                              product.title.length > 8
-                                                  ? '${product.title.substring(0, 14)}...'
+                                              product.title.length > 50
+                                                  ? '${product.title.substring(0, 12)}...'
                                                   : product.title,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
 
                                     SizedBox (
-                                      width: 120,
+                                      width: 150,
 
                                       child: Padding (
                                         padding: const EdgeInsets.only(bottom: 16.0),
@@ -186,23 +186,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             )
                                         ),
                                       ],
-                                    ),
-
-                                    Padding (
-                                        padding: const EdgeInsets.only(left: 166.0, top: 8.0),
-                                        child: GestureDetector (
-                                          onTap: () {
-                                            _productRepository.favoriteAddProducts();
-                                          },
-
-                                          child: Text (
-                                            product.category,
-                                            style: const TextStyle (
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        )
                                     ),
 
                                     SizedBox (
