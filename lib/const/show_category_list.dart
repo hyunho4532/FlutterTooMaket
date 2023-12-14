@@ -1,1 +1,1 @@
-List<String> dropdownCategoryList = ['도서', '전자기기/부품', '피부/미백', '화장품', '도서'];
+List<String> dropdownCategoryList = ['선택', '도서', '전자기기/부품', '피부/미백', '화장품', '도서'];

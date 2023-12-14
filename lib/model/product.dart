@@ -7,9 +7,11 @@ class ProductModel {
   final String address;
   final String userAddress;
   final String nickname;
+  final String category;
   final String? imageUrl;
   final int favoriteCount;
   final bool? isChecked;
+  final bool? isSelected;
 
   ProductModel ({
     required this.authUid,
@@ -18,9 +20,11 @@ class ProductModel {
     required this.address,
     required this.userAddress,
     required this.nickname,
+    required this.category,
     this.imageUrl,
     required this.favoriteCount,
     this.isChecked,
+    this.isSelected,
   });
 
   toJson() {
@@ -31,9 +35,11 @@ class ProductModel {
       "address": address,
       "userAddress": userAddress,
       "nickname": nickname,
+      "category": category,
       "imageUrl": imageUrl,
       "favoriteCount": favoriteCount,
       "isChecked": isChecked,
+      "isSelected": isSelected,
     };
   }
 
@@ -47,9 +53,11 @@ class ProductModel {
       address: data["address"] ?? "",
       userAddress: data["userAddress"] ?? "",
       nickname: data["nickname"] ?? "",
+      category: data["category"] ?? "",
       imageUrl: data["imageUrl"],
-      favoriteCount: data["favoriteCount"],
+      favoriteCount: data["favoriteCount"] ?? 0,
       isChecked: data["isChecked"],
+      isSelected: data["isSelected"],
     );
   }
 }

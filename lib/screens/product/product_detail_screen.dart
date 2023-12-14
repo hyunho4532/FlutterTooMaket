@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_manager/screens/product/product_report_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -130,7 +131,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
           GestureDetector (
             onTap: () {
-
+              Navigator.of(context).push (
+                MaterialPageRoute(builder: (_) => const ProductReportScreen())
+              );
             },
 
             child: const Padding (

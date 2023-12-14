@@ -13,12 +13,17 @@ class ProductRepository {
     var userUID = auth.currentUser!.uid.toString();
     return await _fireStore.collection('products').where('auth', isEqualTo: userUID).get();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getFavoriteUserProducts() async {
+    var userUID = auth.currentUser!.uid.toString();
+    return await _fireStore.collection('favorites').where('auth', isEqualTo: userUID).get();
+  }
   
   Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
     return await _fireStore.collection('users').doc(auth.currentUser!.uid.toString()).get();
   }
 
-  Future<void> insertProducts(String title, String price, String address, String userAddress, String nickname, String imageUrl, int favoriteCount, bool isChecked) async {
+  Future<void> insertProducts(String title, String price, String address, String userAddress, String nickname, String category, String imageUrl, int favoriteCount, bool isChecked, bool isSelected, ) async {
     await _fireStore.collection('products').add({
       'auth': auth.currentUser!.uid.toString(),
       'title': title,
@@ -26,10 +31,26 @@ class ProductRepository {
       'address': address,
       'userAddress': userAddress,
       'nickname': nickname,
+      'category': category,
       'imageUrl': imageUrl,
       'favoriteCount': favoriteCount,
+      'isSelected': isSelected,
       'isChecked': isChecked,
     });
+  }
+
+  Future<void> insertFavoriteProduct(String auth, String title, String address, String imageUrl, String price) async {
+    try {
+      await _fireStore.collection('favorites').add ({
+        'auth': auth,
+        'title': title,
+        'address': address,
+        'imageUrl': imageUrl,
+        'price': price,
+      });
+    } catch (e) {
+      print('Error adding favorite product: $e');
+    }
   }
 
   Future<void> favoriteAddProducts() async {

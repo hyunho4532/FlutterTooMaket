@@ -1,9 +1,11 @@
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_manager/model/product.dart';
 import 'package:customer_manager/repository/product_repository.dart';
 import 'package:customer_manager/screens/product/product_detail_screen.dart';
+import 'package:customer_manager/services/auth/firebaseAuth.dart';
 import 'package:customer_manager/widgets/floating_button/build_floating_button.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final ProductRepository _productRepository = ProductRepository();
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,126 +67,176 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
 
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row (
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Padding (
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox (
+                            width: 140,
+                            height: 140,
 
-                            children: [
-                              imageUrl != null
-                                  ? SizedBox(
-                                width: 110,
-                                height: 110,
-                                child: CachedNetworkImage (
-                                  imageUrl: '$imageUrl',
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                ),
-                              )
-                                  : Container(
+                            child: Card (
+                              shape: RoundedRectangleBorder (
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              
+                              child: SizedBox (
                                 width: 150,
                                 height: 150,
-                                color: Colors.grey,
-                              ),
 
-                              const SizedBox(width: 16),
+                                child: Padding (
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row (
+                                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                              Column (
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-
-                                children: [
-                                  Padding (
-                                    padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
-                                    child: Text (
-                                      product.title,
-                                      style: const TextStyle (
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0
-                                      ),
-                                    ),
-                                  ),
-
-                                  Text (
-                                    product.address,
-                                    style: const TextStyle (
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-
-                                  Row (
                                     children: [
-                                      Padding (
-                                        padding: const EdgeInsets.only(top: 16.0),
-                                        child: Text (
-                                          '${product.price} 원 ',
-                                          style: const TextStyle (
-                                            fontSize: 14.0,
-                                          ),
+                                      imageUrl != null
+                                          ? SizedBox(
+                                        width: 105,
+                                        height: 110,
+                                        child: CachedNetworkImage (
+                                          imageUrl: '$imageUrl',
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
                                         ),
+                                      )
+                                          : Container(
+                                        width: 150,
+                                        height: 150,
+                                        color: Colors.grey,
                                       ),
 
-                                      Padding (
-                                          padding: const EdgeInsets.only(top: 16.0, left: 80),
-                                          child: product.isChecked == true ? const Text (
-                                              '가격 제안 O'
-                                          ) : const Text (
-                                              '가격 제안 X'
-                                          )
-                                      ),
-                                    ],
-                                  ),
+                                      const SizedBox(width: 16),
 
-                                  Row (
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                      Column (
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
 
-                                    children: [
+                                        children: [
+                                          Row (
+                                            children: [
+                                              Padding (
+                                                padding: const EdgeInsets.only(top: 6.0),
+                                                child: SizedBox (
+                                                  width: 120,
+                                                  height: 30,
 
-                                      Padding (
-                                          padding: const EdgeInsets.only(top: 8.0, left: 162.0),
-                                          child: GestureDetector (
-                                            onTap: () {
-                                              _productRepository.favoriteAddProducts();
-                                            },
+                                                  child: Text (
+                                                    product.title.length > 50
+                                                        ? '${product.title.substring(0, 12)}...'
+                                                        : product.title,
+                                                    style: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 16.0,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
 
-                                            child: Text (
-                                              '관심: ${product.favoriteCount.toString()}',
-                                              style: const TextStyle (
-                                                fontSize: 15.0,
-                                                fontWeight: FontWeight.bold,
+                                              Padding (
+                                                padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, left: 60.0),
+                                                child: GestureDetector (
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isFavorite = !isFavorite;
+
+                                                      AnimatedSnackBar.material(
+                                                        '관심 물품으로 등록하였습니다!',
+                                                        type: AnimatedSnackBarType.success,
+                                                      ).show(context);
+
+                                                      _productRepository.insertFavoriteProduct(auth.currentUser!.uid.toString(), product.title, product.address, imageUrl, product.price);
+                                                    });
+                                                  },
+
+                                                  child: isFavorite ?
+                                                  Image.asset(
+                                                    'assets/image/lock_favorite.png',
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                      : Image.asset(
+                                                    'assets/image/unlock_favorite.png',
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          SizedBox (
+                                            width: 150,
+
+                                            child: Padding (
+                                              padding: const EdgeInsets.only(bottom: 16.0),
+                                              child: Text (
+                                                product.userAddress,
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
                                               ),
                                             ),
-                                          )
+                                          ),
+
+                                          Row (
+                                            children: [
+                                              Text (
+                                                '${product.price} 원 ',
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+
+                                              Padding (
+                                                  padding: const EdgeInsets.only(left: 80),
+                                                  child: product.isChecked == true ? const Text (
+                                                      '가격 제안 O'
+                                                  ) : const Text (
+                                                      '가격 제안 X'
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+
+                                          SizedBox (
+                                            width: 0,
+                                            height: 0,
+
+                                            child: Opacity (
+                                              opacity: 0.0,
+
+                                              child: Text (
+                                                product.userAddress,
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          SizedBox (
+                                            width: 0,
+                                            height: 0,
+
+                                            child: Opacity (
+                                              opacity: 0.0,
+
+                                              child: Text (
+                                                product.nickname,
+                                                style: const TextStyle (
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-
-                                  Opacity (
-                                    opacity: 0.0,
-
-                                    child: Text (
-                                      product.userAddress,
-                                      style: const TextStyle (
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Opacity (
-                                    opacity: 0.0,
-
-                                    child: Text (
-                                      product.nickname,
-                                      style: const TextStyle (
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       );
